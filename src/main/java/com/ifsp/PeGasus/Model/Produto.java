@@ -1,4 +1,4 @@
-package com.ifsp.PeGasus;
+package com.ifsp.PeGasus.Model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,7 +21,7 @@ public class Produto {
     public void setId(long id) {
         this.id = id;
     }
-    
+
     @Column(name = "nome")
     private String nome;
     @Column(name = "descricao")

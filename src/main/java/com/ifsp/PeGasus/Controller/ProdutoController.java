@@ -1,4 +1,4 @@
-package com.ifsp.PeGasus;
+package com.ifsp.PeGasus.Controller;
 
 import java.util.List;
 
@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import com.ifsp.PeGasus.Model.Produto;
+import com.ifsp.PeGasus.Repository.ProdutoRepository;
 
 
 @Controller

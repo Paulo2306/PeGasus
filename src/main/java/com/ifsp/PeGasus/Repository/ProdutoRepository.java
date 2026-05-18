@@ -1,8 +1,10 @@
-package com.ifsp.PeGasus;
+package com.ifsp.PeGasus.Repository;
 
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
+
+import com.ifsp.PeGasus.Model.Produto;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
