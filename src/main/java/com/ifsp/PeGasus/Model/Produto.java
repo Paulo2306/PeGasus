@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -28,12 +30,16 @@ public class Produto {
     private String descricao;
     @Column(name = "preco")
     private long preco;
+    @ManyToOne
+    @JoinColumn(name = "categoria_id")
+    private Categoria categoria;
 
 
-    public Produto(String nome, String descricao, long preco) {
+    public Produto(String nome, String descricao, long preco, Categoria categoria) {
         this.nome = nome;
         this.descricao = descricao;
         this.preco = preco;
+        this.categoria = categoria;
     }
     public Produto() {
     }
@@ -55,7 +61,12 @@ public class Produto {
     public void setPreco(long preco) {
         this.preco = preco;
     }
-    
+    public Categoria getCategoria() {
+        return categoria;
+    }
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
+    }
 
 
 }

@@ -12,6 +12,7 @@
                 <th>Nome</th>
                 <th>Descrição</th>
                 <th>Preço</th>
+                <th>Categoria</th>
                 <th>Verificar</th>
             </tr>
         </thead>
@@ -25,6 +26,9 @@
                 </td>
                 <td>
                     [[${produto.preco}]]
+                </td>
+                <td>
+                    [[${produto.categoria?.nome}]]
                 </td>
                 <td>
                     <a th:href="@{/produto/{id}(id=${produto.id})}">Verificar</a>
