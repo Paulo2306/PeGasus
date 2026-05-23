@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ifsp.PeGasus.Model.Categoria;
 import com.ifsp.PeGasus.Model.Produto;
+import com.ifsp.PeGasus.Model.Caracteristicas;
 import com.ifsp.PeGasus.Repository.CategoriaRepository;
 import com.ifsp.PeGasus.Repository.ProdutoRepository;
 
@@ -31,11 +32,14 @@ public class ProdutoController {
     }
 
     @PostMapping("/produto/cadastro")
-    public String saveProdutos(@RequestParam String nome, @RequestParam String descricao, @RequestParam long preco, @RequestParam long categoriaId){
-
+    public String saveProdutos(Produto produto, @RequestParam long categoriaId) {
+        
         Categoria categoria = categoriaRepository.findById(categoriaId).orElse(null);
+        produto.setCategoria(categoria);
 
-        produtoRepository.save(new Produto(nome, descricao, preco, categoria));
+        produto.getCaracteristicas().removeIf(c -> c.getNome() == null || c.getNome().trim().isEmpty());
+
+        produtoRepository.save(produto);
         return "redirect:/produto/formulario";
     }
 

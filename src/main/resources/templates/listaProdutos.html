@@ -13,7 +13,8 @@
                 <th>Descrição</th>
                 <th>Preço</th>
                 <th>Categoria</th>
-                <th>Verificar</th>
+                <th>Caracteristicas</th>
+                <th>Opções</th>
             </tr>
         </thead>
         <tbody>
@@ -29,6 +30,14 @@
                 </td>
                 <td>
                     [[${produto.categoria?.nome}]]
+                </td>
+                <td>
+                    <ul>
+                        <li th:each="carac : ${produto.caracteristicas}">
+                            <strong th:text="${carac.nome} + ': '"></strong>
+                            <span th:text="${carac.valor}"></span>
+                        </li>
+                    </ul>
                 </td>
                 <td>
                     <a th:href="@{/produto/{id}(id=${produto.id})}">Verificar</a>
