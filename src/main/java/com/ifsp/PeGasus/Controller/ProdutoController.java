@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ifsp.PeGasus.Model.Categoria;
 import com.ifsp.PeGasus.Model.Produto;
-import com.ifsp.PeGasus.Model.Caracteristicas;
 import com.ifsp.PeGasus.Repository.CategoriaRepository;
 import com.ifsp.PeGasus.Repository.ProdutoRepository;
 

@@ -10,5 +10,9 @@
         <p>Nome: [[${produto.nome}]]</p>
         <p>Descrição: [[${produto.descricao}]]</p>
         <p>Preço: [[${produto.preco}]]</p>
+
+        <form th:action="@{/carrinho/adicionar}" th:method="post">
+            <button type="submit">Adicionar ao carrinho</button>
+        </form>
     </body>
 </html>
