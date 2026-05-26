@@ -10,7 +10,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.ifsp.PeGasus.Model.Categoria;
 import com.ifsp.PeGasus.Model.Produto;
+import com.ifsp.PeGasus.Model.Caracteristicas;
+import com.ifsp.PeGasus.Repository.CategoriaRepository;
 import com.ifsp.PeGasus.Repository.ProdutoRepository;
 
 
@@ -18,19 +21,29 @@ import com.ifsp.PeGasus.Repository.ProdutoRepository;
 public class ProdutoController {
     @Autowired
     private ProdutoRepository produtoRepository;
+    @Autowired
+    private CategoriaRepository categoriaRepository;
 
-    @GetMapping("formularioProduto")
-    public String formularioProduto(){
+    @GetMapping("/produto/formulario")
+    public String formularioProduto(Model model){
+        List<Categoria> listaCategorias = categoriaRepository.findAll();
+        model.addAttribute("listaCategorias", listaCategorias);
         return "formularioProduto";
     }
 
-    @PostMapping("/produtos")
-    public String saveProdutos(@RequestParam String nome, @RequestParam String descricao, @RequestParam long preco){
-        produtoRepository.save(new Produto(nome, descricao, preco));
-        return "redirect:/formularioProduto";
+    @PostMapping("/produto/cadastro")
+    public String saveProdutos(Produto produto, @RequestParam long categoriaId) {
+        
+        Categoria categoria = categoriaRepository.findById(categoriaId).orElse(null);
+        produto.setCategoria(categoria);
+
+        produto.getCaracteristicas().removeIf(c -> c.getNome() == null || c.getNome().trim().isEmpty());
+
+        produtoRepository.save(produto);
+        return "redirect:/produto/formulario";
     }
 
-    @GetMapping("/listaProdutos")
+    @GetMapping("/produto/lista")
     public String listProdutos(Model model){
         List<Produto> listaProdutos = produtoRepository.findAll();
         model.addAttribute("listaProdutos",listaProdutos);
@@ -39,7 +52,7 @@ public class ProdutoController {
 
     @GetMapping("/produto/{id}")
     public String produto(Model model, @PathVariable long id){
-        Produto produto = produtoRepository.findByID(id);
+        Produto produto = produtoRepository.findById(id).orElse(null);
         model.addAttribute("produto",produto);
         return "detalhesProduto";
     }
@@ -47,29 +60,36 @@ public class ProdutoController {
 
     @GetMapping("/produto/{id}/editar")
     public String editarProduto(@PathVariable long id, Model model){
-        Produto produto = produtoRepository.findByID(id);
+        Produto produto = produtoRepository.findById(id).orElse(null);
+        List<Categoria> listaCategorias = categoriaRepository.findAll();
         model.addAttribute("produto", produto);
+        model.addAttribute("listaCategorias", listaCategorias);
         return "formularioEditarProduto";
     }
 
-    @PostMapping("/produto/atualizarProduto")
+    @PostMapping("/produto/atualizar")
     public String atualizarProduto(@RequestParam long id,
                                    @RequestParam String descricao,
                                    @RequestParam long preco,
-                                    @RequestParam String nome){
+                                   @RequestParam long categoriaId,
+                                   @RequestParam String nome){
 
-        Produto produto = produtoRepository.findByID(id);
+        Produto produto = produtoRepository.findById(id).orElse(null);
+        Categoria categoria = categoriaRepository.findById(categoriaId).orElse(null);
+
         produto.setDescricao(descricao);
         produto.setPreco(preco);
+        produto.setCategoria(categoria);
         produto.setNome(nome);
-        produtoRepository.update(produto);
-        return "redirect:/listaProdutos";
+        produtoRepository.save(produto);
+        
+        return "redirect:/produto/lista";
     }
 
     @GetMapping("/produto/{id}/excluirProduto")
     public String excluirProduto(@PathVariable long id){
-        produtoRepository.delete(id);
-        return "redirect:/listaProdutos";
+        produtoRepository.deleteById(id);
+        return "redirect:/produto/lista";
     }
 
 }
