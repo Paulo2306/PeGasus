@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ifsp.PeGasus.Model.Categoria;
 import com.ifsp.PeGasus.Model.Produto;
-import com.ifsp.PeGasus.Model.Caracteristicas;
 import com.ifsp.PeGasus.Repository.CategoriaRepository;
 import com.ifsp.PeGasus.Repository.ProdutoRepository;
 
@@ -28,7 +27,7 @@ public class ProdutoController {
     public String formularioProduto(Model model){
         List<Categoria> listaCategorias = categoriaRepository.findAll();
         model.addAttribute("listaCategorias", listaCategorias);
-        return "formularioProduto";
+        return "produto/formularioProduto";
     }
 
     @PostMapping("/produto/cadastro")
@@ -47,14 +46,14 @@ public class ProdutoController {
     public String listProdutos(Model model){
         List<Produto> listaProdutos = produtoRepository.findAll();
         model.addAttribute("listaProdutos",listaProdutos);
-        return "listaProdutos";
+        return "produto/listaProdutos";
     }
 
     @GetMapping("/produto/{id}")
     public String produto(Model model, @PathVariable long id){
         Produto produto = produtoRepository.findById(id).orElse(null);
         model.addAttribute("produto",produto);
-        return "detalhesProduto";
+        return "produto/detalhesProduto";
     }
 
 
@@ -64,7 +63,7 @@ public class ProdutoController {
         List<Categoria> listaCategorias = categoriaRepository.findAll();
         model.addAttribute("produto", produto);
         model.addAttribute("listaCategorias", listaCategorias);
-        return "formularioEditarProduto";
+        return "produto/formularioEditarProduto";
     }
 
     @PostMapping("/produto/atualizar")

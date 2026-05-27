@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <a th:href="@{/produto/formulario}">Cadastrar Produto</a>
+    <h2>Lista Produtos</h2>
+    <table border="2">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Descrição</th>
+                <th>Preço</th>
+                <th>Categoria</th>
+                <th>Caracteristicas</th>
+                <th>Opções</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="produto : ${listaProdutos}">
+                <td>
+                    [[${produto.nome}]]
+                </td>
+                <td>
+                    [[${produto.descricao}]]
+                </td>
+                <td>
+                    [[${produto.preco}]]
+                </td>
+                <td>
+                    [[${produto.categoria?.nome}]]
+                </td>
+                <td>
+                    <ul>
+                        <li th:each="carac : ${produto.caracteristicas}">
+                            <strong th:text="${carac.nome} + ': '"></strong>
+                            <span th:text="${carac.valor}"></span>
+                        </li>
+                    </ul>
+                </td>
+                <td>
+                    <a th:href="@{/produto/{id}(id=${produto.id})}">Verificar</a>
+                    <a th:href="@{/produto/{id}/editar(id=${produto.id})}">Editar</a>
+                    <a th:href="@{/produto/{id}/excluirProduto(id=${produto.id})}">Deletar</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <a th:href="@{/dashboard}">Voltar</a>
+</body>
+</html>

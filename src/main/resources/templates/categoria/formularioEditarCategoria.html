@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Formulário de Categoria</h1>
+    <form th:action="@{/categoria/cadastro}" method="post">
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" name="nome" th:value="${categoria.nome}"><br><br>
+        <button type="submit">Cadastrar Categoria</button>
+    </form>
+    <a th:href="@{/categoria/lista}">Voltar</a>
+</body>
+</html>

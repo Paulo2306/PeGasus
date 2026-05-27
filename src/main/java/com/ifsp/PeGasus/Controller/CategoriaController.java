@@ -36,8 +36,8 @@ public class CategoriaController {
     @GetMapping("/categoria/lista")
     public String listcategorias(Model model){
         List<Categoria> listacategorias = categoriaRepository.findAll();
-        model.addAttribute("listacategorias",listacategorias);
-        return "categoria/listaCategorias";
+        model.addAttribute("listaCategoria",listacategorias);
+        return "categoria/listaCategoria";
     }
 
 
@@ -57,7 +57,7 @@ public class CategoriaController {
         return "redirect:/categoria/lista";
     }
 
-    @GetMapping("/categoria/{id}/excluircategoria")
+    @GetMapping("/categoria/{id}/excluirCategoria")
     public String excluircategoria(@PathVariable long id){
         categoriaRepository.deleteById(id);
         return "redirect:/categoria/lista";
