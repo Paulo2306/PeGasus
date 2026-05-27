@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+    </head>
+    <body>
+        <h1>Detalhes do Produto</h1>
+        <p>Nome: [[${produto.nome}]]</p>
+        <p>Descrição: [[${produto.descricao}]]</p>
+        <p>Preço: [[${produto.preco}]]</p>
+        <p>[[${produto.caracteristicas[0].nome}]]: [[${produto.caracteristicas[0].valor}]]</p>
+        <p>[[${produto.caracteristicas[1].nome}]]: [[${produto.caracteristicas[1].valor}]]</p>
+        <p>[[${produto.caracteristicas[2].nome}]]: [[${produto.caracteristicas[2].valor}]]</p>
+        <a th:href="@{/produto/lista}">Voltar</a>
+    </body>
+</html>
+
+
+
+

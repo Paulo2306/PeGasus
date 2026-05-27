@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <a th:href="@{/categoria/formulario}">Cadastrar Categoria</a>
+    <h2>Lista Categorias</h2>
+    <ul>
+        <li th:each="categoria : ${listaCategoria}">
+            [[${categoria.nome}]]
+            <a th:href="@{/categoria/{id}/editar(id=${categoria.id})}">Editar</a>
+
+            <a th:href="@{/categoria/{id}/excluirCategoria(id=${categoria.id})}">Deletar</a>
+
+        </li>
+    </ul>
+    <a th:href="@{/dashboard}">Voltar</a>
+</body>
+</html>
