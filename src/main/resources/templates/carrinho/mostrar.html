@@ -10,7 +10,7 @@
 
     <div th:if="${listaProdutos == null || listaProdutos.isEmpty()}">
         <p>Seu carrinho está vazio.</p>
-        <a th:href="@{/produto/lista}">Ver Produtos</a>
+        <a th:href="@{/dashboard}">Ver Produtos</a>
     </div>
 
     <div th:if="${listaProdutos != null && !listaProdutos.isEmpty()}">
@@ -33,7 +33,7 @@
             </tbody>
         </table>
         <br>
-        <a th:href="@{/produto/lista}">Continuar Comprando</a>
+        <a th:href="@{/dashboard}">Continuar Comprando</a>
     </div>
 </body>
 </html>

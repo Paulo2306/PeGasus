@@ -43,7 +43,7 @@ public class UserController {
         Optional<User> userOpt = userRepository.findByNomeAndSenha(nome, senha);
         if (userOpt.isPresent()) {
             session.setAttribute("usuarioLogado", userOpt.get());
-            return "redirect:/produto/lista";
+            return "redirect:/dashboard";
         }
         model.addAttribute("erro", "Usuário ou senha inválidos.");
         return "user/logar";

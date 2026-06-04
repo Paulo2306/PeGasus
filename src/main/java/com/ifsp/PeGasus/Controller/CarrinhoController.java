@@ -54,7 +54,7 @@ public class CarrinhoController {
 
         Produto produto = produtoRepository.findById(produtoId).orElse(null);
         if (produto == null) {
-            return "redirect:/produto/lista";
+            return "redirect:/dashboard";
         }
 
         Carrinho carrinho = carrinhoRepository.findByIdUser(user.getId())
