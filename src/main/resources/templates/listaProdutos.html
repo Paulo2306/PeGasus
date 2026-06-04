@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Produtos</title>
+    <title>Document</title>
 </head>
 <body>
-    <h1>Lista de Produtos</h1>
     <a th:href="@{/produto/formulario}">Cadastrar Produto</a> |
     <a th:href="@{/categoria/formulario}">Cadastrar Categoria</a> |
     <a th:href="@{/carrinho/mostrar}">Meu Carrinho</a>
+    <h2>Lista Produtos</h2>
     <table border="2">
         <thead>
             <tr>
@@ -23,10 +23,18 @@
         </thead>
         <tbody>
             <tr th:each="produto : ${listaProdutos}">
-                <td>[[${produto.nome}]]</td>
-                <td>[[${produto.descricao}]]</td>
-                <td>[[${produto.preco}]]</td>
-                <td>[[${produto.categoria?.nome}]]</td>
+                <td>
+                    [[${produto.nome}]]
+                </td>
+                <td>
+                    [[${produto.descricao}]]
+                </td>
+                <td>
+                    [[${produto.preco}]]
+                </td>
+                <td>
+                    [[${produto.categoria?.nome}]]
+                </td>
                 <td>
                     <ul>
                         <li th:each="carac : ${produto.caracteristicas}">
@@ -43,5 +51,6 @@
             </tr>
         </tbody>
     </table>
+    <a th:href="@{/dashboard}">Voltar</a>
 </body>
 </html>
