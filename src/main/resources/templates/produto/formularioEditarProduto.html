@@ -17,8 +17,27 @@
         <select id="categoria" name="categoriaId">
             <option th:each="categoria : ${listaCategorias}" th:value="${categoria.id}" th:text="${categoria.nome}" th:selected="${categoria.id} == ${produto.categoria?.id}"></option>
         </select>
+
+        <h3>Características do Produto</h3>
+            
+        <div>
+            <input type="text" th:name="caracteristicas[0].nome" th:value="${produto.caracteristicas[0].nome}">
+            <input type="text" th:name="caracteristicas[0].valor" th:value="${produto.caracteristicas[0].valor}">
+        </div><br>
+
+        <div>
+            <input type="text" th:name="caracteristicas[1].nome" th:value="${produto.caracteristicas[1].nome}">
+            <input type="text" th:name="caracteristicas[1].valor" th:value="${produto.caracteristicas[1].valor}">
+        </div><br>
+
+        <div>
+            <input type="text" th:name="caracteristicas[2].nome" th:value="${produto.caracteristicas[2].nome}">
+            <input type="text" th:name="caracteristicas[2].valor" th:value="${produto.caracteristicas[2].valor}">
+        </div><br>
+
         <input type="hidden" name="id" th:value="${produto.id}">
         <button type="submit">Enviar</button>
     </form>
+    <a th:href="@{/produto/lista}">Voltar</a>
 </body>
 </html>
