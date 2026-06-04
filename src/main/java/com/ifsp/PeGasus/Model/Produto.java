@@ -11,6 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
@@ -50,7 +51,16 @@ public class Produto {
     @JoinColumn(name = "categoria_id")
     private Categoria categoria;
 
+    @Lob //fala que isso é um arquivo pesado
+    private byte[] imagem;
 
+    public byte[] getImagem() {
+        return imagem;
+    }
+    public void setImagem(byte[] imagem) {
+        this.imagem = imagem;
+    }
+    
     public Produto(String nome, String descricao, long preco, Categoria categoria, List<Caracteristicas> caracteristicas) {
         this.nome = nome;
         this.descricao = descricao;

@@ -1,14 +1,19 @@
 package com.ifsp.PeGasus.Controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ifsp.PeGasus.Model.Categoria;
 import com.ifsp.PeGasus.Model.Produto;
@@ -31,12 +36,20 @@ public class ProdutoController {
     }
 
     @PostMapping("/produto/cadastro")
-    public String saveProdutos(Produto produto, @RequestParam long categoriaId) {
+    public String saveProdutos(Produto produto, @RequestParam long categoriaId, @RequestParam("img") MultipartFile img) {
         
         Categoria categoria = categoriaRepository.findById(categoriaId).orElse(null);
         produto.setCategoria(categoria);
 
         produto.getCaracteristicas().removeIf(c -> c.getNome() == null || c.getNome().trim().isEmpty());
+
+        if (img != null && !img.isEmpty()) {
+            try {
+                produto.setImagem(img.getBytes());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
         produtoRepository.save(produto);
         return "redirect:/produto/formulario";
@@ -89,6 +102,21 @@ public class ProdutoController {
     public String excluirProduto(@PathVariable long id){
         produtoRepository.deleteById(id);
         return "redirect:/produto/lista";
+    }
+
+    //isso serve para construir a imagem a partir do valor em bytes
+    @GetMapping("/produto/imagem/{id}")
+    @ResponseBody
+    public ResponseEntity<byte[]> exibirImagem(@PathVariable long id) {
+        Produto produto = produtoRepository.findById(id).orElse(null);
+        
+        if (produto != null && produto.getImagem() != null) {
+            return ResponseEntity.ok()
+                    .contentType(MediaType.IMAGE_JPEG) 
+                    .body(produto.getImagem());
+        }
+        
+        return ResponseEntity.notFound().build();
     }
 
 }

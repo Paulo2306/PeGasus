@@ -6,7 +6,7 @@
     <title>Formulário de Produtos</title>
 </head>
 <body>
-    <form th:action="@{/produto/atualizar}" th:method="post">
+    <form th:action="@{/produto/atualizar}" th:method="post" enctype="multipart/form-data">
         <label for="nome">Nome:</label>
         <input type="text" id="nome" name="nome" th:value="${produto.nome}">
         <label for="descricao">Descrição:</label>
@@ -17,6 +17,9 @@
         <select id="categoria" name="categoriaId">
             <option th:each="categoria : ${listaCategorias}" th:value="${categoria.id}" th:text="${categoria.nome}" th:selected="${categoria.id} == ${produto.categoria?.id}"></option>
         </select>
+
+        <label>Imagem do Produto:</label><br>
+        <input type="file" name="img" accept="image/*">
 
         <h3>Características do Produto</h3>
             

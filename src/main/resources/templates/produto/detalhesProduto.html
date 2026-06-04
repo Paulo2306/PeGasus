@@ -8,6 +8,11 @@
     <body>
         <h1>Detalhes do Produto</h1>
         <p>Nome: [[${produto.nome}]]</p>
+        <p>Imagem:</p>
+        <img th:if="${produto.imagem != null}" 
+        th:src="@{/produto/imagem/{id}(id=${produto.id})}" 
+        width="80" height="80" style="object-fit: cover; border-radius: 4px;" />
+        <span th:if="${produto.imagem == null}">Sem foto</span>
         <p>Descrição: [[${produto.descricao}]]</p>
         <p>Preço: [[${produto.preco}]]</p>
         <p>[[${produto.caracteristicas[0].nome}]]: [[${produto.caracteristicas[0].valor}]]</p>

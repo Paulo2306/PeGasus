@@ -12,6 +12,7 @@
         <thead>
             <tr>
                 <th>Nome</th>
+                <th>Imagem</th>
                 <th>Descrição</th>
                 <th>Preço</th>
                 <th>Categoria</th>
@@ -24,6 +25,14 @@
                 <td>
                     [[${produto.nome}]]
                 </td>
+
+                <td>
+                    <img th:if="${produto.imagem != null}" 
+                        th:src="@{/produto/imagem/{id}(id=${produto.id})}" 
+                        width="80" height="80" style="object-fit: cover; border-radius: 4px;" />
+                    <span th:if="${produto.imagem == null}">Sem foto</span>
+                </td>
+
                 <td>
                     [[${produto.descricao}]]
                 </td>
