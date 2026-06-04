@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
 <body>
-    <a th:href="@{/produto/formulario}">Cadastrar Produto</a>
+    <a th:href="@{/produto/formulario}">Cadastrar Produto</a> |
+    <a th:href="@{/categoria/formulario}">Cadastrar Categoria</a> |
+    <a th:href="@{/carrinho/mostrar}">Meu Carrinho</a>
     <h2>Lista Produtos</h2>
     <table border="2">
         <thead>
