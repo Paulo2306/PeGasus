@@ -1,5 +1,7 @@
 package com.ifsp.PeGasus.Config;
 
+import com.ifsp.PeGasus.Model.User;
+import com.ifsp.PeGasus.Enum.Tipo;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
@@ -15,11 +17,33 @@ public class AutorizacaoInterceptor implements HandlerInterceptor {
             return true;
         }
         
-        if (request.getSession().getAttribute("usuarioLogado") != null) {
+        User user = (User) request.getSession().getAttribute("usuarioLogado");
+        if (user != null) {
+            if (isManagementPath(uri) && user.getTipo() != Tipo.ADMIN) {
+                response.sendRedirect("/dashboard");
+                return false;
+            }
             return true;
         }
         
         response.sendRedirect("/user/logar");
+        return false;
+    }
+
+    private boolean isManagementPath(String uri) {
+        if (uri.startsWith("/categoria")) {
+            return true;
+        }
+        if (uri.startsWith("/produto")) {
+            if (uri.equals("/produto/lista") || 
+                uri.equals("/produto/formulario") || 
+                uri.equals("/produto/cadastro") || 
+                uri.equals("/produto/atualizar") || 
+                uri.endsWith("/editar") || 
+                uri.endsWith("/excluirProduto")) {
+                return true;
+            }
+        }
         return false;
     }
 }
