@@ -2,16 +2,15 @@ package com.ifsp.PeGasus.Model;
 
 import java.util.List;
 
-import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -25,13 +24,28 @@ public class Carrinho {
     @Column(name = "idUser")
     private long idUser;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "produtos_carrinho",
+        joinColumns = @JoinColumn(name = "carrinho_id"),
+        inverseJoinColumns = @JoinColumn(name = "produto_id")
+    )
+    private List<Produto> produtos;
+
+    public Carrinho() {
+    }
+
     public Carrinho(long idUser) {
         this.idUser = idUser;
     }
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "produtos_carrinho", joinColumns = @JoinColumn(name = "carrinho_id"))
-    private List<Produto> produtos;
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public List<Produto> getProdutos() {
         return produtos;

@@ -1,17 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Carrinho</title>
 </head>
 <body>
-    <h1>Carrinho</h1>
-    <div th:each="produto : ${listaProdutos}">
-        <h1>Detalhes do Produto</h1>
-        <p>Nome: [[${produto.nome}]]</p>
-        <p>Descrição: [[${produto.descricao}]]</p>
-        <p>Preço: [[${produto.preco}]]</p>
+    <h1>Seu Carrinho</h1>
+
+    <div th:if="${listaProdutos == null || listaProdutos.isEmpty()}">
+        <p>Seu carrinho está vazio.</p>
+        <a th:href="@{/produto/lista}">Ver Produtos</a>
+    </div>
+
+    <div th:if="${listaProdutos != null && !listaProdutos.isEmpty()}">
+        <table border="2">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Descrição</th>
+                    <th>Preço</th>
+                    <th>Categoria</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="produto : ${listaProdutos}">
+                    <td>[[${produto.nome}]]</td>
+                    <td>[[${produto.descricao}]]</td>
+                    <td>[[${produto.preco}]]</td>
+                    <td>[[${produto.categoria?.nome}]]</td>
+                </tr>
+            </tbody>
+        </table>
+        <br>
+        <a th:href="@{/produto/lista}">Continuar Comprando</a>
     </div>
 </body>
 </html>

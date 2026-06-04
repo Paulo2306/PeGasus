@@ -39,7 +39,7 @@ public class ProdutoController {
         produto.getCaracteristicas().removeIf(c -> c.getNome() == null || c.getNome().trim().isEmpty());
 
         produtoRepository.save(produto);
-        return "redirect:/produto/formulario";
+        return "redirect:/produto/lista";
     }
 
     @GetMapping("/produto/lista")
