@@ -3,44 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar Produto</title>
+    <title>PeGasus - Editar Produto</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-    <form th:action="@{/produto/atualizar}" th:method="post" enctype="multipart/form-data">
-        <label for="nome">Nome:</label>
-        <input type="text" id="nome" name="nome" th:value="${produto.nome}">
-        <label for="descricao">Descrição:</label>
-        <input type="text" id="descricao" name="descricao" th:value="${produto.descricao}"  >
-        <label for="preco">Preço:</label>
-        <input type="number" id="preco" name="preco" step="0.01" th:value="${produto.preco}"  >
-        <label for="categoria">Categoria:</label>
-        <select id="categoria" name="categoriaId">
-            <option th:each="categoria : ${listaCategorias}" th:value="${categoria.id}" th:text="${categoria.nome}" th:selected="${categoria.id} == ${produto.categoria?.id}"></option>
-        </select>
 
-        <label>Imagem do Produto:</label><br>
-        <input type="file" name="img" accept="image/*">
+    <nav>
+        <a th:href="@{/dashboard}">Loja</a>
+        <th:block th:if="${session.usuarioLogado?.tipo?.name() == 'ADMIN'}">
+            <a th:href="@{/produto/lista}">Gerenciar Produtos</a>
+            <a th:href="@{/categoria/lista}">Gerenciar Categorias</a>
+            <a th:href="@{/cupom/lista}">Gerenciar Cupons</a>
+        </th:block>
+        <a th:href="@{/carrinho/mostrar}">Meu Carrinho</a>
+        <a th:href="@{/user/logout}">Sair</a>
+        
+        <span class="user-info" th:if="${session.usuarioLogado != null}">
+            Olá, [[${session.usuarioLogado.nome}]] ([[${session.usuarioLogado.tipo.getTipo()}]])
+        </span>
+    </nav>
 
-        <h3>Características do Produto</h3>
+    <div class="form-container">
+        <h1>Editar Produto</h1>
+        
+        <form th:action="@{/produto/atualizar}" th:method="post" enctype="multipart/form-data">
+            <input type="hidden" name="id" th:value="${produto.id}">
             
-        <div>
-            <input type="text" th:name="caracteristicas[0].nome" th:value="${produto.caracteristicas[0].nome}">
-            <input type="text" th:name="caracteristicas[0].valor" th:value="${produto.caracteristicas[0].valor}">
-        </div><br>
+            <div class="form-group">
+                <label for="nome">Nome do Produto:</label>
+                <input type="text" id="nome" name="nome" th:value="${produto.nome}">
+            </div>
 
-        <div>
-            <input type="text" th:name="caracteristicas[1].nome" th:value="${produto.caracteristicas[1].nome}">
-            <input type="text" th:name="caracteristicas[1].valor" th:value="${produto.caracteristicas[1].valor}">
-        </div><br>
+            <div class="form-group">
+                <label for="descricao">Descrição:</label>
+                <input type="text" id="descricao" name="descricao" th:value="${produto.descricao}">
+            </div>
 
-        <div>
-            <input type="text" th:name="caracteristicas[2].nome" th:value="${produto.caracteristicas[2].nome}">
-            <input type="text" th:name="caracteristicas[2].valor" th:value="${produto.caracteristicas[2].valor}">
-        </div><br>
+            <div class="form-group-row">
+                <div class="form-group">
+                    <label for="preco">Preço (R$):</label>
+                    <input type="number" id="preco" name="preco" step="0.01" th:value="${produto.preco}">
+                </div>
 
-        <input type="hidden" name="id" th:value="${produto.id}">
-        <button type="submit">Enviar</button>
-    </form>
-    <a th:href="@{/produto/lista}">Voltar</a>
+                <div class="form-group">
+                    <label for="categoria">Categoria:</label>
+                    <select id="categoria" name="categoriaId">
+                        <option th:each="categoria : ${listaCategorias}" 
+                                th:value="${categoria.id}" 
+                                th:text="${categoria.nome}" 
+                                th:selected="${categoria.id} == ${produto.categoria?.id}"></option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Imagem do Produto:</label>
+                <input type="file" name="img" accept="image/*" class="file-input">
+            </div>
+
+            <div class="features-section">
+                <h3>Características do Produto</h3>
+                    
+                <div class="feature-row">
+                    <input type="text" th:name="caracteristicas[0].nome" th:value="${produto.caracteristicas[0].nome}" placeholder="Nome">
+                    <input type="text" th:name="caracteristicas[0].valor" th:value="${produto.caracteristicas[0].valor}" placeholder="Valor">
+                </div>
+
+                <div class="feature-row">
+                    <input type="text" th:name="caracteristicas[1].nome" th:value="${produto.caracteristicas[1].nome}" placeholder="Nome">
+                    <input type="text" th:name="caracteristicas[1].valor" th:value="${produto.caracteristicas[1].valor}" placeholder="Valor">
+                </div>
+
+                <div class="feature-row">
+                    <input type="text" th:name="caracteristicas[2].nome" th:value="${produto.caracteristicas[2].nome}" placeholder="Nome">
+                    <input type="text" th:name="caracteristicas[2].valor" th:value="${produto.caracteristicas[2].valor}" placeholder="Valor">
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-submit">Atualizar Produto</button>
+                <a th:href="@{/produto/lista}" class="btn-cancel">Voltar</a>
+            </div>
+        </form>
+    </div>
+
 </body>
 </html>

@@ -3,37 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carrinho</title>
+    <title>PeGasus - Seu Carrinho</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-    <h1>Seu Carrinho</h1>
 
-    <div th:if="${listaProdutos == null || listaProdutos.isEmpty()}">
-        <p>Seu carrinho está vazio.</p>
-        <a th:href="@{/dashboard}">Ver Produtos</a>
+    <nav>
+        <a th:href="@{/dashboard}">Loja</a>
+        <th:block th:if="${session.usuarioLogado?.tipo?.name() == 'ADMIN'}">
+            <a th:href="@{/produto/lista}">Gerenciar Produtos</a>
+            <a th:href="@{/categoria/lista}">Gerenciar Categorias</a>
+            <a th:href="@{/cupom/lista}">Gerenciar Cupons</a>
+        </th:block>
+        <a th:href="@{/carrinho/mostrar}" style="background-color: var(--border-color); color: var(--primary-color);">Meu Carrinho</a>
+        <a th:href="@{/user/logout}">Sair</a>
+        
+        <span class="user-info" th:if="${session.usuarioLogado != null}">
+            Olá, [[${session.usuarioLogado.nome}]] ([[${session.usuarioLogado.tipo.getTipo()}]])
+        </span>
+    </nav>
+
+    <div class="table-container">
+        <h2>Seu Carrinho</h2>
+
+        <div th:if="${listaProdutos == null || listaProdutos.isEmpty()}" style="text-align: center; padding: 40px 20px;">
+            <p style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 25px;">Seu carrinho está vazio no momento.</p>
+            <a th:href="@{/dashboard}" class="btn-submit" style="text-decoration: none;">Ver Produtos</a>
+        </div>
+
+        <div th:if="${listaProdutos != null && !listaProdutos.isEmpty()}">
+            <table class="custom-table">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Descrição</th>
+                        <th>Preço</th>
+                        <th>Categoria</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="produto : ${listaProdutos}">
+                        <td style="font-weight: 600; color: #ffffff;">[[${produto.nome}]]</td>
+                        <td style="max-width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text-muted);">
+                            [[${produto.descricao}]]
+                        </td>
+                        <td style="font-weight: 600; color: var(--success-color);">R$ [[${produto.preco}]],00</td>
+                        <td><span class="category-badge" style="font-size: 0.75rem;">[[${produto.categoria?.nome}]]</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="cart-summary-wrapper">
+    
+                <div class="coupon-box">
+                    <form th:action="@{/carrinho/aplicarCupom}" method="post" style="display: flex; gap: 10px; align-items: center;">
+                        
+                        <input type="text" name="nomeCupom" placeholder="CUPOM DE DESCONTO" 
+                            th:value="${cupomAtivo?.nome}" 
+                            style="max-width: 200px; text-transform: uppercase; background-color: #1a1a1a; color: #ffffff; border: 1px solid var(--border-color); border-radius: 6px; padding: 11px; outline: none;">
+                        
+                        <button type="submit" class="btn-inline view" style="padding: 12px 20px; height: 100%;">Aplicar</button>
+                    </form>
+                    
+                    <p th:if="${msgCupom}" th:text="${msgCupom}" style="color: var(--success-color); font-size: 0.85rem; margin: 5px 0 0 0;"></p>
+                    <p th:if="${erroCupom}" th:text="${erroCupom}" style="color: var(--primary-color); font-size: 0.85rem; margin: 5px 0 0 0;"></p>
+                </div>
+
+                <div class="totals-box">
+                    <div class="total-row">
+                        <span>Subtotal:</span>
+                        <span>R$ [[${subtotal}]],00</span>
+                    </div>
+                    <div class="total-row" th:if="${desconto > 0}" style="color: var(--success-color);">
+                        <span>Desconto ([[${cupomAtivo?.valorPor}]]%):</span>
+                        <span>- R$ [[${desconto}]]</span>
+                    </div>
+                    <div class="total-row final-total">
+                        <span>Total:</span>
+                        <span>R$ [[${total}]]</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="form-actions" style="margin-top: 30px;">
+                <a th:href="@{/dashboard}" class="btn-submit" style="text-decoration: none; background-color: var(--success-color); color: black;">
+                    Continuar Comprando
+                </a>
+            </div>
+        </div>
     </div>
 
-    <div th:if="${listaProdutos != null && !listaProdutos.isEmpty()}">
-        <table border="2">
-            <thead>
-                <tr>
-                    <th>Nome</th>
-                    <th>Descrição</th>
-                    <th>Preço</th>
-                    <th>Categoria</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="produto : ${listaProdutos}">
-                    <td>[[${produto.nome}]]</td>
-                    <td>[[${produto.descricao}]]</td>
-                    <td>[[${produto.preco}]]</td>
-                    <td>[[${produto.categoria?.nome}]]</td>
-                </tr>
-            </tbody>
-        </table>
-        <br>
-        <a th:href="@{/dashboard}">Continuar Comprando</a>
-    </div>
 </body>
 </html>

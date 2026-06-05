@@ -3,23 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Logar</title>
+    <title>PeGasus - Login</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-    <h1>Login</h1>
 
-    <p th:if="${erro}" style="color: red;" th:text="${erro}"></p>
+    <div class="form-container" style="max-width: 450px; margin: 10vh auto;">
+        <h1>Acessar Conta</h1>
 
-    <form th:action="@{/user/logar}" method="post">
-        <label for="nome">Nome de Usuário:</label>
-        <input type="text" id="nome" name="nome" required><br><br>
+        <div th:if="${erro}" class="alert-error" th:text="${erro}"></div>
 
-        <label for="senha">Senha:</label>
-        <input type="password" id="senha" name="senha" required><br><br>
+        <form th:action="@{/user/logar}" method="post">
+            <div class="form-group">
+                <label for="nome">Nome de Usuário:</label>
+                <input type="text" id="nome" name="nome" placeholder="Digite seu usuário" required>
+            </div>
 
-        <button type="submit">Entrar</button>
-    </form>
-    <br>
-    <a th:href="@{/user/registrar}">Ainda não tem conta? Cadastre-se</a>
+            <div class="form-group">
+                <label for="senha">Senha:</label>
+                <input type="password" id="senha" name="senha" placeholder="Digite sua senha" required>
+            </div>
+
+            <div class="form-actions" style="flex-direction: column; align-items: stretch; gap: 15px;">
+                <button type="submit" class="btn-submit" style="width: 100%;">Entrar</button>
+                <a th:href="@{/user/registrar}" class="btn-cancel" style="text-align: center;">Ainda não tem conta? Cadastre-se</a>
+            </div>
+        </form>
+    </div>
+
 </body>
 </html>

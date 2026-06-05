@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PeGasus - Gerenciar Cupons</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+    <nav>
+        <a th:href="@{/dashboard}">Loja</a>
+        <th:block th:if="${session.usuarioLogado?.tipo?.name() == 'ADMIN'}">
+            <a th:href="@{/produto/lista}">Gerenciar Produtos</a>
+            <a th:href="@{/categoria/lista}">Gerenciar Categorias</a>
+            <a th:href="@{/cupom/lista}" style="background-color: var(--border-color); color: var(--primary-color);">Gerenciar Cupons</a>
+        </th:block>
+        <a th:href="@{/carrinho/mostrar}">Meu Carrinho</a>
+        <a th:href="@{/user/logout}">Sair</a>
+    </nav>
+
+    <div class="table-container">
+        <h2>Cupons de Desconto</h2>
+        
+        <div class="table-actions-top">
+            <a th:href="@{/cupom/formulario}" class="btn-submit" style="text-decoration: none; font-size: 0.9rem; padding: 10px 16px;">+ Novo Cupom</a>
+        </div>
+
+        <ul class="custom-management-list">
+            <li th:each="cupom : ${listaCupoms}">
+                <div>
+                    <span style="color: var(--primary-color); font-weight: 700; text-transform: uppercase; margin-right: 15px;">[[${cupom.nome}]]</span>
+                    <span style="color: var(--text-muted); font-size: 0.9rem;">([[${cupom.valorPor}]]% de desconto)</span>
+                </div>
+                <div class="action-links">
+                    <a th:href="@{/cupom/{id}/editar(id=${cupom.id})}" class="btn-inline edit">Editar</a>
+                    <a th:href="@{/cupom/{id}/excluirCupom(id=${cupom.id})}" class="btn-inline delete">Deletar</a>
+                </div>
+            </li>
+            <li th:if="${listaCupoms == null || listaCupoms.isEmpty()}" style="justify-content: center; color: var(--text-muted);">
+                Nenhum cupom cadastrado ainda.
+            </li>
+        </ul>
+
+        <div class="form-actions">
+            <a th:href="@{/dashboard}" class="btn-cancel">Voltar para o Dashboard</a>
+        </div>
+    </div>
+
+</body>
+</html>
