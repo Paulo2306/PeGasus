@@ -5,30 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PeGasus - Dashboard</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="icon" href="img/PeGasus-Icon.png">
 </head>
 <body>
 
     <!-- Navegação -->
     <nav>
-        <a th:href="@{/dashboard}">Dashboard</a> |
+        <img src="img\PeGasus-Icon.png" alt="" height="50">
+        <a th:href="@{/dashboard}">Loja</a>
         <th:block th:if="${session.usuarioLogado?.tipo?.name() == 'ADMIN'}">
-            <a th:href="@{/produto/lista}">Gerenciar Produtos</a> |
-            <a th:href="@{/categoria/lista}">Gerenciar Categorias</a> |
+            <a th:href="@{/produto/lista}">Gerenciar Produtos</a>
+            <a th:href="@{/categoria/lista}">Gerenciar Categorias</a>
+            <a th:href="@{/cupom/lista}">Gerenciar Cupons</a>
         </th:block>
-        <a th:href="@{/carrinho/mostrar}">Meu Carrinho</a> |
+        <a th:href="@{/carrinho/mostrar}">Meu Carrinho</a>
         <a th:href="@{/user/logout}">Sair</a>
-        <span th:if="${session.usuarioLogado != null}">
-            | Olá, <strong th:text="${session.usuarioLogado.nome}">Usuário</strong>
-            (<span th:text="${session.usuarioLogado.tipo.getTipo()}">Tipo</span>)
+        
+        <span class="user-info" th:if="${session.usuarioLogado != null}">
+            Olá, [[${session.usuarioLogado.nome}]] ([[${session.usuarioLogado.tipo.getTipo()}]])
         </span>
     </nav>
 
-    <hr>
+    <div class="titulo">
+        <img src="img\PeGasus-Icon-Horse.png" alt="">
+        <h1>PeGasus</h1>
+    </div>
 
-    <h1>Dashboard</h1>
 
     <!-- Busca e Filtro -->
-    <form th:action="@{/dashboard}" method="get">
+    <form th:action="@{/dashboard}" method="get" class="search-form">
         <input type="hidden" name="page" value="0">
         <input type="text" name="q" th:value="${q}" placeholder="Buscar produtos por nome ou descrição...">
         <select name="categoriaId">
@@ -71,7 +76,7 @@
     </div>
 
     <!-- Paginação -->
-    <div th:if="${totalPages > 1}">
+    <div class="pagination" th:if="${totalPages > 1}">
         <br>
         <a th:if="${currentPage > 0}"
            th:href="@{/dashboard(page=${currentPage - 1}, q=${q}, categoriaId=${categoriaId})}">Anterior</a>

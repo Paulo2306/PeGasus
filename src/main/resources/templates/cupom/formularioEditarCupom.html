@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PeGasus - Editar Categoria</title>
+    <title>PeGasus - Editar Cupom</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
@@ -17,26 +17,27 @@
         </th:block>
         <a th:href="@{/carrinho/mostrar}">Meu Carrinho</a>
         <a th:href="@{/user/logout}">Sair</a>
-        
-        <span class="user-info" th:if="${session.usuarioLogado != null}">
-            Olá, [[${session.usuarioLogado.nome}]] ([[${session.usuarioLogado.tipo.getTipo()}]])
-        </span>
     </nav>
 
-    <div class="form-container">
-        <h1>Editar Categoria</h1>
+    <div class="form-container" style="max-width: 500px;">
+        <h1>Editar Cupom</h1>
         
-        <form th:action="@{/categoria/atualizar}" method="post">
-            <input type="hidden" name="id" th:value="${categoria.id}">
+        <form th:action="@{/cupom/atualizar}" method="post">
+            <input type="hidden" name="id" th:value="${cupom.id}">
             
             <div class="form-group">
-                <label for="nome">Nome da Categoria:</label>
-                <input type="text" id="nome" name="nome" th:value="${categoria.nome}" required>
+                <label for="nome">Código do Cupom:</label>
+                <input type="text" id="nome" name="nome" th:value="${cupom.nome}" style="text-transform: uppercase;" required>
+            </div>
+
+            <div class="form-group">
+                <label for="valorPor">valorPor de Desconto (%):</label>
+                <input type="number" id="valorPor" name="valorPor" min="1" max="100" th:value="${cupom.valorPor}" required>
             </div>
 
             <div class="form-actions">
-                <button type="submit" class="btn-submit">Atualizar Categoria</button>
-                <a th:href="@{/categoria/lista}" class="btn-cancel">Voltar</a>
+                <button type="submit" class="btn-submit">Atualizar Cupom</button>
+                <a th:href="@{/cupom/lista}" class="btn-cancel">Voltar</a>
             </div>
         </form>
     </div>

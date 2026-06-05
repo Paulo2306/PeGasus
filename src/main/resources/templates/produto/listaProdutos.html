@@ -3,63 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista Produtos</title>
+    <title>PeGasus - Lista Produtos</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-    <a th:href="@{/produto/formulario}">Cadastrar Produto</a> |
-    <a th:href="@{/categoria/formulario}">Cadastrar Categoria</a> |
-    <a th:href="@{/carrinho/mostrar}">Meu Carrinho</a>
-    <h2>Lista Produtos</h2>
-    <table border="2">
-        <thead>
-            <tr>
-                <th>Nome</th>
-                <th>Imagem</th>
-                <th>Descrição</th>
-                <th>Preço</th>
-                <th>Categoria</th>
-                <th>Caracteristicas</th>
-                <th>Opções</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="produto : ${listaProdutos}">
-                <td>
-                    [[${produto.nome}]]
-                </td>
 
-                <td>
-                    <img th:if="${produto.imagem != null}" 
-                        th:src="@{/produto/imagem/{id}(id=${produto.id})}" 
-                        width="80" height="80" style="object-fit: cover; border-radius: 4px;" />
-                    <span th:if="${produto.imagem == null}">Sem foto</span>
-                </td>
+    <nav>
+        <a th:href="@{/dashboard}">Loja</a>
+        <th:block th:if="${session.usuarioLogado?.tipo?.name() == 'ADMIN'}">
+            <a th:href="@{/produto/lista}">Gerenciar Produtos</a>
+            <a th:href="@{/categoria/lista}">Gerenciar Categorias</a>
+            <a th:href="@{/cupom/lista}">Gerenciar Cupons</a>
+        </th:block>
+        <a th:href="@{/carrinho/mostrar}">Meu Carrinho</a>
+        <a th:href="@{/user/logout}">Sair</a>
+        
+        <span class="user-info" th:if="${session.usuarioLogado != null}">
+            Olá, [[${session.usuarioLogado.nome}]] ([[${session.usuarioLogado.tipo.getTipo()}]])
+        </span>
+    </nav>
 
-                <td>
-                    [[${produto.descricao}]]
-                </td>
-                <td>
-                    [[${produto.preco}]]
-                </td>
-                <td>
-                    [[${produto.categoria?.nome}]]
-                </td>
-                <td>
-                    <ul>
-                        <li th:each="carac : ${produto.caracteristicas}">
-                            <strong th:text="${carac.nome} + ': '"></strong>
-                            <span th:text="${carac.valor}"></span>
-                        </li>
-                    </ul>
-                </td>
-                <td>
-                    <a th:href="@{/produto/{id}(id=${produto.id})}">Verificar</a>
-                    <a th:href="@{/produto/{id}/editar(id=${produto.id})}">Editar</a>
-                    <a th:href="@{/produto/{id}/excluirProduto(id=${produto.id})}">Deletar</a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <a th:href="@{/dashboard}">Voltar</a>
+    <div class="table-container">
+        <h2>Lista Produtos</h2>
+        
+        <div class="table-actions-top">
+            <a th:href="@{/produto/formulario}" class="btn-submit" style="text-decoration: none; font-size: 0.9rem; padding: 10px 16px; background-color: var(--success-color); color: black;">+ Novo Produto</a>
+            <a th:href="@{/categoria/formulario}" class="btn-submit" style="text-decoration: none; font-size: 0.9rem; padding: 10px 16px;">+ Nova Categoria</a>
+        </div>
+
+        <table class="custom-table">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Imagem</th>
+                    <th>Descrição</th>
+                    <th>Preço</th>
+                    <th>Categoria</th>
+                    <th>Características</th>
+                    <th>Opções</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="produto : ${listaProdutos}">
+                    <td style="font-weight: 600; color: #ffffff;">[[${produto.nome}]]</td>
+
+                    <td>
+                        <img th:if="${produto.imagem != null}" 
+                             th:src="@{/produto/imagem/{id}(id=${produto.id})}" 
+                             width="60" height="60" style="object-fit: cover; border-radius: 4px; border: 1px solid #333;" />
+                        <span th:if="${produto.imagem == null}" style="font-size: 0.8rem; color: var(--text-muted);">Sem foto</span>
+                    </td>
+
+                    <td style="max-width: 250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">[[${produto.descricao}]]</td>
+                    <td style="font-weight: 600; color: var(--success-color);">R$ [[${produto.preco}]],00</td>
+                    <td><span class="category-badge" style="font-size: 0.75rem;">[[${produto.categoria?.nome}]]</span></td>
+                    <td>
+                        <ul>
+                            <li th:each="carac : ${produto.caracteristicas}">
+                                <strong th:text="${carac.nome} + ': '"></strong>
+                                <span th:text="${carac.valor}"></span>
+                            </li>
+                        </ul>
+                    </td>
+                    <td>
+                        <div class="action-links">
+                            <a th:href="@{/produto/{id}(id=${produto.id})}" class="btn-inline view">Ver</a>
+                            <a th:href="@{/produto/{id}/editar(id=${produto.id})}" class="btn-inline edit">Editar</a>
+                            <a th:href="@{/produto/{id}/excluirProduto(id=${produto.id})}" class="btn-inline delete}">Deletar</a>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="form-actions">
+            <a th:href="@{/dashboard}" class="btn-cancel">Voltar para o Dashboard</a>
+        </div>
+    </div>
+
 </body>
 </html>

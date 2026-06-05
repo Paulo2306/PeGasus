@@ -1,17 +1,43 @@
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Formulário de Categoria</title>
-    </head>
-    <body>
-        <h1>Formulário de Categoria</h1>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PeGasus - Nova Categoria</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+    <nav>
+        <a th:href="@{/dashboard}">Loja</a>
+        <th:block th:if="${session.usuarioLogado?.tipo?.name() == 'ADMIN'}">
+            <a th:href="@{/produto/lista}">Gerenciar Produtos</a>
+            <a th:href="@{/categoria/lista}">Gerenciar Categorias</a>
+            <a th:href="@{/cupom/lista}">Gerenciar Cupons</a>
+        </th:block>
+        <a th:href="@{/carrinho/mostrar}">Meu Carrinho</a>
+        <a th:href="@{/user/logout}">Sair</a>
+        
+        <span class="user-info" th:if="${session.usuarioLogado != null}">
+            Olá, [[${session.usuarioLogado.nome}]] ([[${session.usuarioLogado.tipo.getTipo()}]])
+        </span>
+    </nav>
+
+    <div class="form-container">
+        <h1>Nova Categoria</h1>
+        
         <form th:action="@{/categoria/cadastro}" method="post">
-            <label for="nome">Nome:</label>
-            <input type="text" id="nome" name="nome" required><br><br>
-            <button type="submit">Cadastrar Categoria</button>
+            <div class="form-group">
+                <label for="nome">Nome da Categoria:</label>
+                <input type="text" id="nome" name="nome" placeholder="Ex: Hardware, Periféricos" required>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-submit">Cadastrar Categoria</button>
+                <a th:href="@{/categoria/lista}" class="btn-cancel">Voltar</a>
+            </div>
         </form>
-        <a th:href="@{/categoria/lista}">Voltar</a>
-    </body>
+    </div>
+
+</body>
 </html>

@@ -36,7 +36,7 @@ public class DashboardController {
             @RequestParam(defaultValue = "0") int page,
             Model model) {
         
-        int size = 12;
+        int size = 10;
         
         String searchTerm = (q != null && !q.trim().isEmpty()) ? q.trim() : null;
         Long selectedCategory = (categoriaId != null && categoriaId > 0) ? categoriaId : null;

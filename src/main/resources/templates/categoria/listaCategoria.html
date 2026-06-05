@@ -3,18 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista Categorias</title>
+    <title>PeGasus - Lista Categorias</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-    <a th:href="@{/categoria/formulario}">Cadastrar Categoria</a>
-    <h2>Lista Categorias</h2>
-    <ul>
-        <li th:each="categoria : ${listaCategoria}">
-            [[${categoria.nome}]]
-            <a th:href="@{/categoria/{id}/editar(id=${categoria.id})}">Editar</a>
-            <a th:href="@{/categoria/{id}/excluirCategoria(id=${categoria.id})}">Deletar</a>
-        </li>
-    </ul>
-    <a th:href="@{/dashboard}">Voltar</a>
+
+    <nav>
+        <a th:href="@{/dashboard}">Loja</a>
+        <th:block th:if="${session.usuarioLogado?.tipo?.name() == 'ADMIN'}">
+            <a th:href="@{/produto/lista}">Gerenciar Produtos</a>
+            <a th:href="@{/categoria/lista}">Gerenciar Categorias</a>
+            <a th:href="@{/cupom/lista}">Gerenciar Cupons</a>
+        </th:block>
+        <a th:href="@{/carrinho/mostrar}">Meu Carrinho</a>
+        <a th:href="@{/user/logout}">Sair</a>
+        
+        <span class="user-info" th:if="${session.usuarioLogado != null}">
+            Olá, [[${session.usuarioLogado.nome}]] ([[${session.usuarioLogado.tipo.getTipo()}]])
+        </span>
+    </nav>
+
+    <div class="table-container">
+        <h2>Lista Categorias</h2>
+        
+        <div class="table-actions-top">
+            <a th:href="@{/categoria/formulario}" class="btn-submit" style="text-decoration: none; font-size: 0.9rem; padding: 10px 16px;">+ Cadastrar Categoria</a>
+        </div>
+
+        <ul class="custom-management-list">
+            <li th:each="categoria : ${listaCategoria}">
+                <span>[[${categoria.nome}]]</span>
+                <div class="action-links">
+                    <a th:href="@{/categoria/{id}/editar(id=${categoria.id})}" class="btn-inline edit">Editar</a>
+                    <a th:href="@{/categoria/{id}/excluirCategoria(id=${categoria.id})}" class="btn-inline delete}">Deletar</a>
+                </div>
+            </li>
+        </ul>
+
+        <div class="form-actions">
+            <a th:href="@{/dashboard}" class="btn-cancel">Voltar para o Dashboard</a>
+        </div>
+    </div>
+
 </body>
 </html>
