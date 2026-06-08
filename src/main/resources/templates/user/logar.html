@@ -11,7 +11,7 @@
     <div class="form-container" style="max-width: 450px; margin: 10vh auto;">
         <h1>Acessar Conta</h1>
 
-        <div th:if="${erro}" class="alert-error" th:text="${erro}"></div>
+        <div th:if="${mensagem}" class="alert-error" th:text="${mensagem}"></div>
 
         <form th:action="@{/user/logar}" method="post">
             <div class="form-group">

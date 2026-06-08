@@ -1,18 +1,19 @@
 package com.ifsp.PeGasus.Controller;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.ifsp.PeGasus.Model.User;
 import com.ifsp.PeGasus.Enum.Tipo;
+import com.ifsp.PeGasus.Model.User;
 import com.ifsp.PeGasus.Repository.UserRepository;
 
 import jakarta.servlet.http.HttpSession;
-import java.util.Optional;
 
 @Controller
 public class UserController {
@@ -21,15 +22,33 @@ public class UserController {
     private UserRepository userRepository;
 
     @GetMapping("/user/registrar")
-    public String registrarForm(Model model) {
-        model.addAttribute("user", new User());
+    public String registrarForm() {
         return "user/registrar";
     }
 
     @PostMapping("/user/registrar")
-    public String registrar(User user, @RequestParam(value = "tipoUsuario", defaultValue = "CLIENTE") String tipoUsuario) {
+    public String registrar(
+            User user,
+            @RequestParam(value = "tipoUsuario", defaultValue = "CLIENTE") String tipoUsuario,
+            RedirectAttributes redirectAttributes) {
+
+        // Verifica se já existe usuário com o mesmo nome
+        if (userRepository.findByNome(user.getNome()).isPresent()) {
+            redirectAttributes.addFlashAttribute(
+                    "erro",
+                    "Já existe um usuário com esse nome.");
+
+            return "redirect:/user/registrar";
+        }
+
         user.setTipo(Tipo.valueOf(tipoUsuario));
+
         userRepository.save(user);
+
+        redirectAttributes.addFlashAttribute(
+                "mensagem",
+                "Usuário cadastrado com sucesso!");
+
         return "redirect:/user/logar";
     }
 
@@ -39,12 +58,19 @@ public class UserController {
     }
 
     @PostMapping("/user/logar")
-    public String logar(@RequestParam String nome, @RequestParam String senha, HttpSession session, Model model) {
+    public String logar(
+            @RequestParam String nome,
+            @RequestParam String senha,
+            HttpSession session,
+            org.springframework.ui.Model model) {
+
         Optional<User> userOpt = userRepository.findByNomeAndSenha(nome, senha);
+
         if (userOpt.isPresent()) {
             session.setAttribute("usuarioLogado", userOpt.get());
             return "redirect:/dashboard";
         }
+
         model.addAttribute("erro", "Usuário ou senha inválidos.");
         return "user/logar";
     }
