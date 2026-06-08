@@ -11,6 +11,8 @@
     <div class="form-container" style="max-width: 450px; margin: 10vh auto;">
         <h1>Criar Conta</h1>
 
+        <div th:if="${erro}" class="alert-error" th:text="${erro}"></div>
+        
         <form th:action="@{/user/registrar}" method="post">
             <div class="form-group">
                 <label for="nome">Nome de Usuário:</label>
