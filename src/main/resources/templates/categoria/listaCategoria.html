@@ -30,12 +30,14 @@
             <a th:href="@{/categoria/formulario}" class="btn-submit" style="text-decoration: none; font-size: 0.9rem; padding: 10px 16px;">+ Cadastrar Categoria</a>
         </div>
 
+        <div class="alert-error" th:if="${erro}" th:text="${erro}"></div>
+
         <ul class="custom-management-list">
             <li th:each="categoria : ${listaCategoria}">
                 <span>[[${categoria.nome}]]</span>
                 <div class="action-links">
                     <a th:href="@{/categoria/{id}/editar(id=${categoria.id})}" class="btn-inline edit">Editar</a>
-                    <a th:href="@{/categoria/{id}/excluirCategoria(id=${categoria.id})}" class="btn-inline delete}">Deletar</a>
+                    <a th:href="@{/categoria/{id}/excluirCategoria(id=${categoria.id})}" class="btn-inline delete">Deletar</a>
                 </div>
             </li>
         </ul>

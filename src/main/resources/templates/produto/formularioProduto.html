@@ -28,25 +28,28 @@
         
         <form th:action="@{/produto/cadastro}" th:method="post" enctype="multipart/form-data">
             
+            <div class="alert-error" th:if="${erro}" th:text="${erro}"></div>
+
             <div class="form-group">
                 <label for="nome">Nome do Produto:</label>
-                <input type="text" id="nome" name="nome" placeholder="Digite o nome do produto">
+                <input type="text" id="nome" name="nome" placeholder="Digite o nome do produto" required>
             </div>
 
             <div class="form-group">
                 <label for="descricao">Descrição:</label>
-                <input type="text" id="descricao" name="descricao" placeholder="Breve descrição do produto">
+                <input type="text" id="descricao" name="descricao" placeholder="Breve descrição do produto" required>
             </div>
 
             <div class="form-group-row">
                 <div class="form-group">
                     <label for="preco">Preço (R$):</label>
-                    <input type="number" id="preco" name="preco" step="0.01" placeholder="0.00">
+                    <input type="number" id="preco" name="preco" step="0.01" placeholder="0.00" required>
                 </div>
 
                 <div class="form-group">
                     <label for="categoria">Categoria:</label>
-                    <select id="categoria" name="categoriaId">
+                    <select id="categoria" name="categoriaId" required>
+                        <option value="" disabled selected>Selecione uma categoria</option>
                         <option th:each="categoria : ${listaCategorias}" 
                                 th:value="${categoria.id}" 
                                 th:text="${categoria.nome}"></option>

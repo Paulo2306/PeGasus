@@ -9,15 +9,20 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ifsp.PeGasus.Model.Categoria;
 import com.ifsp.PeGasus.Repository.CategoriaRepository;
+import com.ifsp.PeGasus.Repository.ProdutoRepository;
 
 @Controller
 public class CategoriaController {
 
     @Autowired
     private CategoriaRepository categoriaRepository;
+
+    @Autowired
+    private ProdutoRepository produtoRepository;
 
     @GetMapping("/categoria/formulario")
     public String formulariocategoria(Model model){
@@ -58,7 +63,11 @@ public class CategoriaController {
     }
 
     @GetMapping("/categoria/{id}/excluirCategoria")
-    public String excluircategoria(@PathVariable long id){
+    public String excluircategoria(@PathVariable long id, RedirectAttributes redirectAttributes){
+        if (produtoRepository.existsByCategoriaId(id)) {
+            redirectAttributes.addFlashAttribute("erro", "Não é possível excluir esta categoria pois existem produtos vinculados a ela.");
+            return "redirect:/categoria/lista";
+        }
         categoriaRepository.deleteById(id);
         return "redirect:/categoria/lista";
     }   

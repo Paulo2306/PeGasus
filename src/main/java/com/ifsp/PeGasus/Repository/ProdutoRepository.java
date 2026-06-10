@@ -16,4 +16,6 @@ public interface ProdutoRepository extends JpaRepository<Produto, Long> {
            "(:nome IS NULL OR :nome = '' OR LOWER(p.nome) LIKE LOWER(CONCAT('%', :nome, '%')) OR LOWER(p.descricao) LIKE LOWER(CONCAT('%', :nome, '%'))) " +
            "AND (:categoriaId IS NULL OR p.categoria.id = :categoriaId)")
     Page<Produto> findByNomeAndCategoria(@Param("nome") String nome, @Param("categoriaId") Long categoriaId, Pageable pageable);
+
+    boolean existsByCategoriaId(long categoriaId);
 }
