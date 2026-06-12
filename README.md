@@ -8,3 +8,7 @@ ERROS:
 - Cadastro de produtos faltando informações
 - Deletar categoria que já tem um produto pertencente
 - Cadastro de produtos sem categoria
+
+MELHORIAS:
+- Botão de comprar que limpa o carrinho
+- CSS diminuido com Tailwind

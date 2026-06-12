@@ -1,98 +1,131 @@
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PeGasus - Seu Carrinho</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
-</head>
-<body>
 
-    <nav>
-        <a th:href="@{/dashboard}">Loja</a>
-        <th:block th:if="${session.usuarioLogado?.tipo?.name() == 'ADMIN'}">
-            <a th:href="@{/produto/lista}">Gerenciar Produtos</a>
-            <a th:href="@{/categoria/lista}">Gerenciar Categorias</a>
-            <a th:href="@{/cupom/lista}">Gerenciar Cupons</a>
-        </th:block>
-        <a th:href="@{/carrinho/mostrar}" style="background-color: var(--border-color); color: var(--primary-color);">Meu Carrinho</a>
-        <a th:href="@{/user/logout}">Sair</a>
-        
-        <span class="user-info" th:if="${session.usuarioLogado != null}">
-            Olá, [[${session.usuarioLogado.nome}]] ([[${session.usuarioLogado.tipo.getTipo()}]])
-        </span>
-    </nav>
+<head th:replace="~{fragments :: head('PeGasus - Seu Carrinho')}"></head>
 
-    <div class="table-container">
-        <h2>Seu Carrinho</h2>
+<body class="bg-[#1a1a1a] text-white font-sans antialiased min-h-screen p-5 md:p-8">
 
-        <div th:if="${listaProdutos == null || listaProdutos.isEmpty()}" style="text-align: center; padding: 40px 20px;">
-            <p style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 25px;">Seu carrinho está vazio no momento.</p>
-            <a th:href="@{/dashboard}" class="btn-submit" style="text-decoration: none;">Ver Produtos</a>
+    <nav th:replace="~{fragments :: navbar('carrinho')}"></nav>
+
+    <div class="max-w-6xl mx-auto bg-black border border-neutral-800 rounded-2xl p-6 md:p-8 shadow-2xl">
+        <h2 class="text-2xl md:text-3xl font-extrabold tracking-tight mb-6 flex items-center gap-3 text-white">
+            <i class="fa-solid fa-cart-shopping text-brand-red"></i> Seu Carrinho
+        </h2>
+
+        <div th:if="${msgSucesso}"
+            class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 p-4 rounded-xl mb-6 text-center text-sm font-semibold flex items-center justify-center gap-2">
+            <i class="fa-solid fa-circle-check text-base"></i> [[${msgSucesso}]]
+        </div>
+        <div th:if="${msgCupom}"
+            class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 p-4 rounded-xl mb-6 text-center text-sm font-semibold flex items-center justify-center gap-2">
+            <i class="fa-solid fa-tag text-base"></i> [[${msgCupom}]]
+        </div>
+        <div th:if="${erroCupom}"
+            class="bg-red-500/10 text-red-500 border border-red-500/20 p-4 rounded-xl mb-6 text-center text-sm font-semibold flex items-center justify-center gap-2">
+            <i class="fa-solid fa-circle-exclamation text-base"></i> [[${erroCupom}]]
+        </div>
+
+        <div th:if="${listaProdutos == null || listaProdutos.isEmpty()}" class="text-center py-16 px-4">
+            <div
+                class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-neutral-900 text-neutral-600 mb-6 border border-neutral-850">
+                <i class="fa-solid fa-cart-arrow-down text-3xl"></i>
+            </div>
+            <p class="text-neutral-400 text-lg mb-8 font-medium">Seu carrinho está vazio no momento.</p>
+            <a th:href="@{/dashboard}"
+                class="inline-flex items-center gap-2 px-6 py-3 bg-brand-red hover:bg-brand-redHover text-white font-semibold rounded-xl transition-all shadow-lg shadow-red-900/25">
+                <i class="fa-solid fa-bag-shopping"></i> Ver Produtos
+            </a>
         </div>
 
         <div th:if="${listaProdutos != null && !listaProdutos.isEmpty()}">
-            <table class="custom-table">
-                <thead>
-                    <tr>
-                        <th>Nome</th>
-                        <th>Descrição</th>
-                        <th>Preço</th>
-                        <th>Categoria</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="produto : ${listaProdutos}">
-                        <td style="font-weight: 600; color: #ffffff;">[[${produto.nome}]]</td>
-                        <td style="max-width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text-muted);">
-                            [[${produto.descricao}]]
-                        </td>
-                        <td style="font-weight: 600; color: var(--success-color);">R$ [[${produto.preco}]],00</td>
-                        <td><span class="category-badge" style="font-size: 0.75rem;">[[${produto.categoria?.nome}]]</span></td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <div class="cart-summary-wrapper">
-    
-                <div class="coupon-box">
-                    <form th:action="@{/carrinho/aplicarCupom}" method="post" style="display: flex; gap: 10px; align-items: center;">
-                        
-                        <input type="text" name="nomeCupom" placeholder="CUPOM DE DESCONTO" 
-                            th:value="${cupomAtivo?.nome}" 
-                            style="max-width: 200px; text-transform: uppercase; background-color: #1a1a1a; color: #ffffff; border: 1px solid var(--border-color); border-radius: 6px; padding: 11px; outline: none;">
-                        
-                        <button type="submit" class="btn-inline view" style="padding: 12px 20px; height: 100%;">Aplicar</button>
-                    </form>
-                    
-                    <p th:if="${msgCupom}" th:text="${msgCupom}" style="color: var(--success-color); font-size: 0.85rem; margin: 5px 0 0 0;"></p>
-                    <p th:if="${erroCupom}" th:text="${erroCupom}" style="color: var(--primary-color); font-size: 0.85rem; margin: 5px 0 0 0;"></p>
-                </div>
-
-                <div class="totals-box">
-                    <div class="total-row">
-                        <span>Subtotal:</span>
-                        <span>R$ [[${subtotal}]],00</span>
-                    </div>
-                    <div class="total-row" th:if="${desconto > 0}" style="color: var(--success-color);">
-                        <span>Desconto ([[${cupomAtivo?.valorPor}]]%):</span>
-                        <span>- R$ [[${desconto}]]</span>
-                    </div>
-                    <div class="total-row final-total">
-                        <span>Total:</span>
-                        <span>R$ [[${total}]]</span>
-                    </div>
-                </div>
-
+            <div class="overflow-x-auto rounded-xl border border-neutral-800 mb-8">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr
+                            class="bg-neutral-950 border-b border-neutral-800 text-xs font-bold uppercase tracking-wider text-brand-red">
+                            <th class="py-4 px-5">Nome</th>
+                            <th class="py-4 px-5">Descrição</th>
+                            <th class="py-4 px-5 text-right">Preço</th>
+                            <th class="py-4 px-5 text-center">Categoria</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-neutral-900 text-sm">
+                        <tr th:each="produto : ${listaProdutos}" class="hover:bg-neutral-950/50 transition-colors">
+                            <td class="py-4 px-5 font-semibold text-white">[[${produto.nome}]]</td>
+                            <td class="py-4 px-5 text-neutral-400 max-w-xs truncate">[[${produto.descricao}]]</td>
+                            <td class="py-4 px-5 text-right font-bold text-brand-green">R$ [[${produto.preco}]],00</td>
+                            <td class="py-4 px-5 text-center">
+                                <span
+                                    class="inline-block px-2.5 py-1 text-xs font-bold uppercase tracking-wider bg-neutral-900 text-brand-red border border-neutral-800 rounded-md">
+                                    [[${produto.categoria?.nome}]]
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
-            <div class="form-actions" style="margin-top: 30px;">
-                <a th:href="@{/dashboard}" class="btn-submit" style="text-decoration: none; background-color: var(--success-color); color: black;">
-                    Continuar Comprando
+            <div class="flex flex-col lg:flex-row justify-between items-start gap-8 mt-6">
+                <div class="w-full lg:max-w-md bg-neutral-950 p-5 rounded-xl border border-neutral-800">
+                    <h3
+                        class="text-sm font-bold uppercase tracking-wider text-neutral-400 mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-percent text-brand-red"></i> Cupom de Desconto
+                    </h3>
+                    <form th:action="@{/carrinho/aplicarCupom}" method="post" class="flex gap-2">
+                        <input type="text" name="nomeCupom" placeholder="CUPOM" th:value="${cupomAtivo?.nome}"
+                            class="flex-1 min-w-0 bg-neutral-900 border border-neutral-850 hover:border-neutral-700 focus:border-brand-red focus:ring-1 focus:ring-brand-red rounded-lg px-4 py-2.5 text-sm outline-none uppercase font-semibold text-white placeholder-neutral-600 transition-all">
+                        <button type="submit"
+                            class="px-5 py-2.5 bg-neutral-800 hover:bg-neutral-700 text-white hover:text-brand-red font-semibold rounded-lg text-sm border border-neutral-700 hover:border-neutral-650 transition-all flex items-center gap-2">
+                            Aplicar
+                        </button>
+                    </form>
+                </div>
+
+                <div class="w-full lg:w-80 bg-neutral-950 p-6 rounded-xl border border-neutral-800">
+                    <h3
+                        class="text-sm font-bold uppercase tracking-wider text-neutral-400 mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-calculator text-brand-red"></i> Resumo do Pedido
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between text-sm text-neutral-400">
+                            <span>Subtotal:</span>
+                            <span class="font-semibold text-white">R$ [[${subtotal}]],00</span>
+                        </div>
+                        <div th:if="${desconto > 0}" class="flex justify-between text-sm text-brand-green">
+                            <span>Desconto ([[${cupomAtivo?.valorPor}]]%):</span>
+                            <span class="font-semibold">- R$ [[${desconto}]],00</span>
+                        </div>
+                        <div class="border-t border-neutral-800 pt-3 flex justify-between items-baseline">
+                            <span class="text-sm font-bold text-white">Total:</span>
+                            <span class="text-2xl font-extrabold text-brand-green">R$ [[${total}]]</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row items-center gap-4 mt-8 pt-6 border-t border-neutral-800">
+                <a th:href="@{/dashboard}"
+                    class="w-full sm:w-auto px-6 py-3 border border-neutral-700 hover:border-neutral-500 text-neutral-300 hover:text-white font-medium rounded-lg text-center transition-all flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-arrow-left"></i> Continuar Comprando
                 </a>
+
+                <form th:action="@{/carrinho/limpar}" method="post" class="w-full sm:w-auto">
+                    <button type="submit"
+                        class="w-full px-6 py-3 bg-red-600/10 hover:bg-red-600/20 text-red-500 border border-red-500/20 hover:border-red-500/40 font-semibold rounded-lg transition-all flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-trash-can"></i> Limpar Carrinho
+                    </button>
+                </form>
+
+                <form th:action="@{/carrinho/comprar}" method="post" class="w-full sm:w-auto sm:ml-auto">
+                    <button type="submit"
+                        class="w-full px-8 py-3 bg-brand-green hover:bg-brand-greenHover text-neutral-950 font-bold rounded-lg transition-all shadow-lg shadow-emerald-500/20 hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-credit-card"></i> Finalizar Compra
+                    </button>
+                </form>
             </div>
         </div>
     </div>
 
 </body>
+
 </html>

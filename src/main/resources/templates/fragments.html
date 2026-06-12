@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title}">PeGasus</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script th:src="@{/js/tailwind-config.js}"></script>
+    <link rel="icon" type="image/png" th:href="@{/img/PeGasus-Icon-Horse.png}">
+</head>
+
+<body>
+    <nav th:fragment="navbar(activePage)"
+        class="sticky top-0 z-50 bg-black/95 backdrop-blur-md border-b border-neutral-800 py-4 px-6 md:px-10 flex flex-wrap items-center gap-3 md:gap-6 shadow-xl mb-8 -mt-5 -mx-5 md:-mx-8">
+        <div class="flex items-center gap-2 mr-4">
+            <img th:src="@{/img/PeGasus-Icon.png}" alt="" class="h-8 md:h-10 object-contain">
+            <span class="text-xl font-extrabold tracking-wider text-brand-red hidden sm:inline">PEGASUS</span>
+        </div>
+        <div class="flex flex-wrap items-center gap-2 sm:gap-3 text-sm md:text-base">
+            <a th:href="@{/dashboard}"
+                th:class="${activePage == 'loja'} ? 'bg-neutral-800 text-white font-semibold py-2 px-3 rounded-lg transition-all duration-200' : 'text-neutral-300 hover:text-white font-medium py-2 px-3 rounded-lg hover:bg-neutral-800 transition-all duration-200'">
+                <i class="fa-solid fa-store mr-1.5"></i> Loja
+            </a>
+
+            <th:block th:if="${session.usuarioLogado?.tipo?.name() == 'ADMIN'}">
+                <a th:href="@{/admin/painel}"
+                    th:class="${activePage == 'gerenciamento'} ? 'bg-neutral-800 text-brand-red font-semibold py-2 px-3 rounded-lg transition-all duration-200' : 'text-neutral-300 hover:text-white font-medium py-2 px-3 rounded-lg hover:bg-neutral-800 transition-all duration-200'">
+                    <i class="fa-solid fa-shield-halved mr-1.5"></i> Gerenciamento
+                </a>
+            </th:block>
+
+            <a th:href="@{/carrinho/mostrar}"
+                th:class="${activePage == 'carrinho'} ? 'bg-neutral-800 text-brand-red font-semibold py-2 px-3 rounded-lg transition-all duration-200' : 'text-neutral-300 hover:text-white font-medium py-2 px-3 rounded-lg hover:bg-neutral-800 transition-all duration-200'">
+                <i class="fa-solid fa-cart-shopping mr-1.5"></i> Meu Carrinho
+            </a>
+
+            <a th:href="@{/user/logout}"
+                class="text-neutral-400 hover:text-red-400 font-medium py-2 px-3 rounded-lg hover:bg-red-500/10 transition-all duration-200">
+                <i class="fa-solid fa-right-from-bracket mr-1.5"></i> Sair
+            </a>
+        </div>
+
+        <div class="ml-auto text-xs md:text-sm text-neutral-400 font-medium bg-neutral-900 px-3 py-1.5 rounded-full border border-neutral-800"
+            th:if="${session.usuarioLogado != null}">
+            Olá, <span class="text-brand-red font-semibold">[[${session.usuarioLogado.nome}]]</span> (<span
+                class="text-neutral-300">[[${session.usuarioLogado.tipo.getTipo()}]]</span>)
+        </div>
+    </nav>
+</body>
+
+</html>

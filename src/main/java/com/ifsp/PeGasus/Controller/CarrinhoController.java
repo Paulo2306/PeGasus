@@ -46,14 +46,28 @@ public class CarrinhoController {
                 return carrinhoRepository.save(newCarrinho);
         });
 
-    
         model.addAttribute("subtotal", carrinho.getSubtotal());
         model.addAttribute("desconto", carrinho.getValorDesconto());
         model.addAttribute("total", carrinho.getTotal());
-        
         model.addAttribute("cupomAtivo", carrinho.getCupom());
-
         model.addAttribute("listaProdutos", carrinho.getProdutos());
+
+        String msgSucesso = (String) session.getAttribute("msgSucesso");
+        if (msgSucesso != null) {
+            model.addAttribute("msgSucesso", msgSucesso);
+            session.removeAttribute("msgSucesso");
+        }
+        String msgCupom = (String) session.getAttribute("msgCupom");
+        if (msgCupom != null) {
+            model.addAttribute("msgCupom", msgCupom);
+            session.removeAttribute("msgCupom");
+        }
+        String erroCupom = (String) session.getAttribute("erroCupom");
+        if (erroCupom != null) {
+            model.addAttribute("erroCupom", erroCupom);
+            session.removeAttribute("erroCupom");
+        }
+
         return "carrinho/mostrar";
     }
 
@@ -102,6 +116,41 @@ public class CarrinhoController {
         }
         carrinho.getProdutos().add(produto);
         carrinhoRepository.save(carrinho);
+
+        return "redirect:/carrinho/mostrar";
+    }
+
+    @PostMapping("/carrinho/limpar")
+    public String limparCarrinho(HttpSession session) {
+        User user = (User) session.getAttribute("usuarioLogado");
+        if (user == null) return "redirect:/user/logar";
+
+        Carrinho carrinho = carrinhoRepository.findByIdUser(user.getId()).orElse(null);
+        if (carrinho != null) {
+            carrinho.getProdutos().clear();
+            carrinho.setCupom(null);
+            carrinhoRepository.save(carrinho);
+            session.setAttribute("msgSucesso", "Carrinho esvaziado com sucesso!");
+        }
+
+        return "redirect:/carrinho/mostrar";
+    }
+
+    @PostMapping("/carrinho/comprar")
+    public String comprarCarrinho(HttpSession session) {
+        User user = (User) session.getAttribute("usuarioLogado");
+        if (user == null) return "redirect:/user/logar";
+
+        Carrinho carrinho = carrinhoRepository.findByIdUser(user.getId()).orElse(null);
+        if (carrinho == null || carrinho.getProdutos() == null || carrinho.getProdutos().isEmpty()) {
+            session.setAttribute("erroCupom", "Não é possível finalizar a compra com o carrinho vazio.");
+            return "redirect:/carrinho/mostrar";
+        }
+
+        carrinho.getProdutos().clear();
+        carrinho.setCupom(null);
+        carrinhoRepository.save(carrinho);
+        session.setAttribute("msgSucesso", "Compra realizada com sucesso!");
 
         return "redirect:/carrinho/mostrar";
     }

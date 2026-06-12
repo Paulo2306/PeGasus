@@ -1,35 +1,57 @@
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PeGasus - Login</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
-</head>
-<body>
 
-    <div class="form-container" style="max-width: 450px; margin: 10vh auto;">
-        <h1>Acessar Conta</h1>
+<head th:replace="~{fragments :: head('PeGasus - Login')}"></head>
 
-        <div th:if="${mensagem}" class="alert-error" th:text="${mensagem}"></div>
+<body class="bg-[#1a1a1a] text-white font-sans antialiased min-h-screen flex items-center justify-center p-4">
 
-        <form th:action="@{/user/logar}" method="post">
-            <div class="form-group">
-                <label for="nome">Nome de Usuário:</label>
-                <input type="text" id="nome" name="nome" placeholder="Digite seu usuário" required>
+    <div class="w-full max-w-md bg-black border border-neutral-800 rounded-2xl p-6 md:p-8 shadow-2xl">
+        <div class="text-center mb-6">
+            <span class="text-2xl font-extrabold tracking-widest text-brand-red">PEGASUS</span>
+            <h1 class="text-xl font-bold text-neutral-300 mt-2">Acessar Conta</h1>
+        </div>
+
+        <div th:if="${mensagem}"
+            class="bg-red-500/10 text-red-500 border border-red-500/20 p-4 rounded-xl mb-6 text-center text-sm font-semibold flex items-center justify-center gap-2">
+            <i class="fa-solid fa-circle-exclamation"></i> [[${mensagem}]]
+        </div>
+
+        <form th:action="@{/user/logar}" method="post" class="space-y-5">
+            <div class="flex flex-col gap-2">
+                <label for="nome" class="text-sm font-semibold text-neutral-400">Nome de Usuário:</label>
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-neutral-600">
+                        <i class="fa-solid fa-user"></i>
+                    </span>
+                    <input type="text" id="nome" name="nome" placeholder="Digite seu usuário" required
+                        class="w-full bg-neutral-950 border border-neutral-850 hover:border-neutral-700 focus:border-brand-red focus:ring-1 focus:ring-brand-red rounded-lg pl-10 pr-4 py-2.5 text-sm outline-none transition-all placeholder-neutral-700">
+                </div>
             </div>
 
-            <div class="form-group">
-                <label for="senha">Senha:</label>
-                <input type="password" id="senha" name="senha" placeholder="Digite sua senha" required>
+            <div class="flex flex-col gap-2">
+                <label for="senha" class="text-sm font-semibold text-neutral-400">Senha:</label>
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-neutral-600">
+                        <i class="fa-solid fa-lock"></i>
+                    </span>
+                    <input type="password" id="senha" name="senha" placeholder="Digite sua senha" required
+                        class="w-full bg-neutral-950 border border-neutral-850 hover:border-neutral-700 focus:border-brand-red focus:ring-1 focus:ring-brand-red rounded-lg pl-10 pr-4 py-2.5 text-sm outline-none transition-all placeholder-neutral-700">
+                </div>
             </div>
 
-            <div class="form-actions" style="flex-direction: column; align-items: stretch; gap: 15px;">
-                <button type="submit" class="btn-submit" style="width: 100%;">Entrar</button>
-                <a th:href="@{/user/registrar}" class="btn-cancel" style="text-align: center;">Ainda não tem conta? Cadastre-se</a>
+            <div class="pt-2 space-y-3">
+                <button type="submit"
+                    class="w-full py-3 bg-brand-red hover:bg-brand-redHover text-white font-bold rounded-lg transition-all shadow-lg shadow-red-950/30 hover:scale-[1.01] active:scale-[0.99]">
+                    Entrar
+                </button>
+                <a th:href="@{/user/registrar}"
+                    class="block text-center py-2.5 border border-neutral-850 hover:border-neutral-750 hover:bg-neutral-900 text-neutral-400 hover:text-white font-medium text-sm rounded-lg transition-all">
+                    Ainda não tem conta? Cadastre-se
+                </a>
             </div>
         </form>
     </div>
 
 </body>
+
 </html>

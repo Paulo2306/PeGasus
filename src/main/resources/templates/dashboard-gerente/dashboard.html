@@ -1,96 +1,135 @@
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PeGasus - Dashboard</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
-    <link rel="icon" href="img/PeGasus-Icon.png">
-</head>
-<body>
 
-    <!-- Navegação -->
-    <nav>
-        <img src="img\PeGasus-Icon.png" alt="" height="50">
-        <a th:href="@{/dashboard}">Loja</a>
-        <th:block th:if="${session.usuarioLogado?.tipo?.name() == 'ADMIN'}">
-            <a th:href="@{/produto/lista}">Gerenciar Produtos</a>
-            <a th:href="@{/categoria/lista}">Gerenciar Categorias</a>
-            <a th:href="@{/cupom/lista}">Gerenciar Cupons</a>
-        </th:block>
-        <a th:href="@{/carrinho/mostrar}">Meu Carrinho</a>
-        <a th:href="@{/user/logout}">Sair</a>
-        
-        <span class="user-info" th:if="${session.usuarioLogado != null}">
-            Olá, [[${session.usuarioLogado.nome}]] ([[${session.usuarioLogado.tipo.getTipo()}]])
-        </span>
-    </nav>
+<head th:replace="~{fragments :: head('PeGasus - Dashboard')}"></head>
 
-    <div class="titulo">
-        <img src="img\PeGasus-Icon-Horse.png" alt="">
-        <h1>PeGasus</h1>
+<body class="bg-[#1a1a1a] text-white font-sans antialiased min-h-screen p-5 md:p-8">
+
+    <nav th:replace="~{fragments :: navbar('loja')}"></nav>
+
+    <div class="max-w-7xl mx-auto flex items-center gap-4 mb-8">
+        <img th:src="@{/img/PeGasus-Icon-Horse.png}" alt="" class="h-12 w-auto object-contain">
+        <h1 class="text-3xl font-extrabold tracking-tight text-white">PeGasus</h1>
     </div>
 
+    <div class="max-w-7xl mx-auto bg-black border border-neutral-800 rounded-2xl p-5 shadow-xl mb-8">
+        <form th:action="@{/dashboard}" method="get" class="flex flex-col md:flex-row items-center gap-4">
+            <input type="hidden" name="page" value="0">
+            <div class="relative flex-1 w-full">
+                <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-neutral-600">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </span>
+                <input type="text" name="q" th:value="${q}" placeholder="Buscar produtos por nome ou descrição..."
+                    class="w-full bg-neutral-950 border border-neutral-850 hover:border-neutral-700 focus:border-brand-red focus:ring-1 focus:ring-brand-red rounded-lg pl-10 pr-4 py-2.5 text-sm outline-none transition-all placeholder-neutral-700 text-white">
+            </div>
 
-    <!-- Busca e Filtro -->
-    <form th:action="@{/dashboard}" method="get" class="search-form">
-        <input type="hidden" name="page" value="0">
-        <input type="text" name="q" th:value="${q}" placeholder="Buscar produtos por nome ou descrição...">
-        <select name="categoriaId">
-            <option value="">Todas as Categorias</option>
-            <option th:each="cat : ${categorias}"
-                    th:value="${cat.id}"
-                    th:text="${cat.nome}"
-                    th:selected="${categoriaId != null && cat.id == categoriaId}"></option>
-        </select>
-        <button type="submit">Filtrar</button>
-        <a th:if="${(q != null && q != '') || (categoriaId != null && categoriaId > 0)}"
-           th:href="@{/dashboard}">Limpar Filtros</a>
-    </form>
+            <div class="relative w-full md:w-60">
+                <select name="categoriaId"
+                    class="w-full bg-neutral-950 border border-neutral-850 hover:border-neutral-700 focus:border-brand-red focus:ring-1 focus:ring-brand-red rounded-lg px-4 py-2.5 text-sm outline-none transition-all text-white cursor-pointer appearance-none">
+                    <option value="">Todas as Categorias</option>
+                    <option th:each="cat : ${categorias}" th:value="${cat.id}" th:text="${cat.nome}"
+                        th:selected="${categoriaId != null && cat.id == categoriaId}"></option>
+                </select>
+                <span class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-neutral-500 pointer-events-none">
+                    <i class="fa-solid fa-chevron-down text-xs"></i>
+                </span>
+            </div>
 
-    <br>
-
-    <!-- Grid de Produtos -->
-    <div th:if="${produtos == null || produtos.isEmpty()}">
-        <p>Nenhum produto encontrado.</p>
+            <div class="flex items-center gap-3 w-full md:w-auto">
+                <button type="submit"
+                    class="flex-1 md:flex-none px-6 py-2.5 bg-brand-red hover:bg-brand-redHover text-white font-semibold rounded-lg text-sm transition-all shadow-md shadow-red-950/20">
+                    Filtrar
+                </button>
+                <a th:if="${(q != null && q != '') || (categoriaId != null && categoriaId > 0)}" th:href="@{/dashboard}"
+                    class="px-5 py-2.5 border border-neutral-800 hover:border-neutral-700 hover:bg-neutral-900 text-neutral-400 hover:text-white font-medium text-sm rounded-lg transition-all text-center">
+                    Limpar
+                </a>
+            </div>
+        </form>
     </div>
 
-    <div class="products-grid" th:if="${produtos != null && !produtos.isEmpty()}">
-        <div class="product-card" th:each="produto : ${produtos}">
-            <img th:if="${produto.imagem != null}"
-                 th:src="@{/produto/imagem/{id}(id=${produto.id})}"
-                 alt="Imagem do Produto" />
-            <span th:if="${produto.imagem == null}">Sem imagem</span>
+    <div class="max-w-7xl mx-auto">
+        <div th:if="${produtos == null || produtos.isEmpty()}"
+            class="text-center py-16 bg-black border border-neutral-800 rounded-2xl">
+            <div
+                class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-neutral-900 text-neutral-600 mb-4">
+                <i class="fa-solid fa-circle-question text-2xl"></i>
+            </div>
+            <p class="text-neutral-400 text-base font-medium">Nenhum produto encontrado.</p>
+        </div>
 
-            <h3 th:text="${produto.nome}">Nome do Produto</h3>
-            <p th:text="${produto.descricao}">Descrição</p>
-            <p><strong>R$ [[${produto.preco}]],00</strong></p>
-            <p>Categoria: [[${produto.categoria?.nome}]]</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+            th:if="${produtos != null && !produtos.isEmpty()}">
+            <div th:each="produto : ${produtos}"
+                class="group bg-black border border-neutral-800 hover:border-neutral-700 rounded-2xl p-4 flex flex-col justify-between shadow-xl transition-all duration-300 hover:translate-y-[-4px]">
+                <div>
+                    <!-- Imagem do Card -->
+                    <div
+                        class="w-full aspect-[4/3] rounded-xl overflow-hidden bg-neutral-950 border border-neutral-850 flex items-center justify-center mb-4 relative">
+                        <img th:if="${produto.imagem != null}" th:src="@{/produto/imagem/{id}(id=${produto.id})}"
+                            alt="Imagem do Produto"
+                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                        <div class="text-neutral-600 flex flex-col items-center gap-1"
+                            th:if="${produto.imagem == null}">
+                            <i class="fa-solid fa-image text-2xl"></i>
+                            <span class="text-[10px] font-semibold uppercase tracking-wider">Sem Foto</span>
+                        </div>
+                        <span
+                            class="absolute top-2 right-2 px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wide bg-black/80 backdrop-blur-sm border border-neutral-800 text-brand-red rounded-md">
+                            [[${produto.categoria?.nome}]]
+                        </span>
+                    </div>
 
-            <a th:href="@{/produto/{id}(id=${produto.id})}">Ver Detalhes</a>
-            <form th:action="@{/carrinho/adicionar}" method="post" style="display:inline;">
-                <input type="hidden" name="produtoId" th:value="${produto.id}">
-                <button type="submit">Adicionar ao Carrinho</button>
-            </form>
+                    <h3 th:text="${produto.nome}"
+                        class="text-base font-bold text-white mb-1 leading-tight group-hover:text-brand-red transition-colors">
+                        Nome do Produto</h3>
+                    <p th:text="${produto.descricao}"
+                        class="text-xs text-neutral-400 line-clamp-2 min-h-[32px] mb-3 leading-relaxed">Descrição</p>
+                </div>
+
+                <div class="mt-auto">
+                    <div class="text-lg font-black text-brand-green mb-3">R$ [[${produto.preco}]],00</div>
+
+                    <div class="flex flex-col gap-2 pt-2 border-t border-neutral-900">
+                        <a th:href="@{/produto/{id}(id=${produto.id})}"
+                            class="w-full py-2 border border-neutral-850 hover:border-neutral-700 text-neutral-300 hover:text-white font-medium text-xs rounded-lg text-center transition-all flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-circle-info"></i> Detalhes
+                        </a>
+                        <form th:action="@{/carrinho/adicionar}" method="post" class="w-full">
+                            <input type="hidden" name="produtoId" th:value="${produto.id}">
+                            <button type="submit"
+                                class="w-full py-2 bg-brand-green hover:bg-brand-greenHover text-neutral-950 font-bold text-xs rounded-lg transition-all flex items-center justify-center gap-1.5">
+                                <i class="fa-solid fa-cart-plus"></i> Adicionar
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- Paginação -->
-    <div class="pagination" th:if="${totalPages > 1}">
-        <br>
+    <div class="max-w-7xl mx-auto flex justify-center items-center gap-2 mt-10" th:if="${totalPages > 1}">
         <a th:if="${currentPage > 0}"
-           th:href="@{/dashboard(page=${currentPage - 1}, q=${q}, categoriaId=${categoriaId})}">Anterior</a>
+            th:href="@{/dashboard(page=${currentPage - 1}, q=${q}, categoriaId=${categoriaId})}"
+            class="px-3 py-2 bg-neutral-950 border border-neutral-850 hover:border-neutral-750 text-neutral-300 hover:text-white text-xs font-semibold rounded-lg transition-all flex items-center gap-1">
+            <i class="fa-solid fa-chevron-left text-[10px]"></i> Anterior
+        </a>
 
         <th:block th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
-            <a th:if="${i != currentPage}"
-               th:href="@{/dashboard(page=${i}, q=${q}, categoriaId=${categoriaId})}"
-               th:text="${i + 1}">1</a>
-            <strong th:if="${i == currentPage}" th:text="${i + 1}">1</strong>
+            <a th:if="${i != currentPage}" th:href="@{/dashboard(page=${i}, q=${q}, categoriaId=${categoriaId})}"
+                th:text="${i + 1}"
+                class="w-8 h-8 flex items-center justify-center bg-neutral-950 border border-neutral-850 hover:border-neutral-750 text-neutral-400 hover:text-white text-xs font-semibold rounded-lg transition-all">1</a>
+            <span th:if="${i == currentPage}" th:text="${i + 1}"
+                class="w-8 h-8 flex items-center justify-center bg-brand-red text-white text-xs font-bold rounded-lg shadow-md shadow-red-950/20">1</span>
         </th:block>
 
         <a th:if="${currentPage < totalPages - 1}"
-           th:href="@{/dashboard(page=${currentPage + 1}, q=${q}, categoriaId=${categoriaId})}">Próxima</a>
+            th:href="@{/dashboard(page=${currentPage + 1}, q=${q}, categoriaId=${categoriaId})}"
+            class="px-3 py-2 bg-neutral-950 border border-neutral-850 hover:border-neutral-750 text-neutral-300 hover:text-white text-xs font-semibold rounded-lg transition-all flex items-center gap-1">
+            Próxima <i class="fa-solid fa-chevron-right text-[10px]"></i>
+        </a>
     </div>
 
 </body>
+
 </html>

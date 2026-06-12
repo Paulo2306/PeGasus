@@ -1,46 +1,49 @@
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PeGasus - Editar Cupom</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
-</head>
-<body>
 
-    <nav>
-        <a th:href="@{/dashboard}">Loja</a>
-        <th:block th:if="${session.usuarioLogado?.tipo?.name() == 'ADMIN'}">
-            <a th:href="@{/produto/lista}">Gerenciar Produtos</a>
-            <a th:href="@{/categoria/lista}">Gerenciar Categorias</a>
-            <a th:href="@{/cupom/lista}">Gerenciar Cupons</a>
-        </th:block>
-        <a th:href="@{/carrinho/mostrar}">Meu Carrinho</a>
-        <a th:href="@{/user/logout}">Sair</a>
-    </nav>
+<head th:replace="~{fragments :: head('PeGasus - Editar Cupom')}"></head>
 
-    <div class="form-container" style="max-width: 500px;">
-        <h1>Editar Cupom</h1>
-        
-        <form th:action="@{/cupom/atualizar}" method="post">
+<body class="bg-[#1a1a1a] text-white font-sans antialiased min-h-screen p-5 md:p-8">
+
+    <nav th:replace="~{fragments :: navbar('gerenciamento')}"></nav>
+
+    <div class="max-w-md mx-auto bg-black border border-neutral-800 rounded-2xl p-6 md:p-8 shadow-2xl">
+        <h1
+            class="text-2xl font-extrabold tracking-tight mb-6 flex items-center gap-3 text-white border-b border-neutral-800 pb-4">
+            <i class="fa-solid fa-pen-to-square text-brand-red"></i> Editar Cupom
+        </h1>
+
+        <form th:action="@{/cupom/atualizar}" method="post" class="space-y-5">
             <input type="hidden" name="id" th:value="${cupom.id}">
-            
-            <div class="form-group">
-                <label for="nome">Código do Cupom:</label>
-                <input type="text" id="nome" name="nome" th:value="${cupom.nome}" style="text-transform: uppercase;" required>
+
+            <div class="flex flex-col gap-2">
+                <label for="nome" class="text-sm font-semibold text-neutral-400">Código do Cupom:</label>
+                <input type="text" id="nome" name="nome" th:value="${cupom.nome}" style="text-transform: uppercase;"
+                    required
+                    class="w-full bg-neutral-950 border border-neutral-850 hover:border-neutral-700 focus:border-brand-red focus:ring-1 focus:ring-brand-red rounded-lg px-4 py-2.5 text-sm outline-none transition-all font-bold tracking-wider text-white">
             </div>
 
-            <div class="form-group">
-                <label for="valorPor">valorPor de Desconto (%):</label>
-                <input type="number" id="valorPor" name="valorPor" min="1" max="100" th:value="${cupom.valorPor}" required>
+            <div class="flex flex-col gap-2">
+                <label for="valorPor" class="text-sm font-semibold text-neutral-400">Porcentagem de Desconto
+                    (%):</label>
+                <input type="number" id="valorPor" name="valorPor" min="1" max="100" th:value="${cupom.valorPor}"
+                    required
+                    class="w-full bg-neutral-950 border border-neutral-850 hover:border-neutral-700 focus:border-brand-red focus:ring-1 focus:ring-brand-red rounded-lg px-4 py-2.5 text-sm outline-none transition-all text-white">
             </div>
 
-            <div class="form-actions">
-                <button type="submit" class="btn-submit">Atualizar Cupom</button>
-                <a th:href="@{/cupom/lista}" class="btn-cancel">Voltar</a>
+            <div class="flex items-center gap-3 pt-4 border-t border-neutral-850">
+                <button type="submit"
+                    class="px-6 py-2.5 bg-brand-red hover:bg-brand-redHover text-white font-bold rounded-lg text-sm transition-all shadow-md shadow-red-950/20">
+                    Atualizar Cupom
+                </button>
+                <a th:href="@{/cupom/lista}"
+                    class="px-5 py-2.5 border border-neutral-700 hover:border-neutral-500 text-neutral-300 hover:text-white font-medium rounded-lg text-sm transition-all">
+                    Voltar
+                </a>
             </div>
         </form>
     </div>
 
 </body>
+
 </html>

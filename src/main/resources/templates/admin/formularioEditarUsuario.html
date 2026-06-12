@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments :: head('PeGasus - Editar Usuário')}"></head>
+
+<body class="bg-[#1a1a1a] text-white font-sans antialiased min-h-screen p-5 md:p-8">
+
+    <nav th:replace="~{fragments :: navbar('gerenciamento')}"></nav>
+
+    <div class="max-w-md mx-auto bg-black border border-neutral-800 rounded-2xl p-6 md:p-8 shadow-2xl">
+        <h1
+            class="text-2xl font-extrabold tracking-tight mb-6 flex items-center gap-3 text-white border-b border-neutral-800 pb-4">
+            <i class="fa-solid fa-user-pen text-brand-red"></i> Editar Usuário
+        </h1>
+
+        <form th:action="@{/admin/usuarios/atualizar}" method="post" class="space-y-5">
+            <input type="hidden" name="id" th:value="${usuario.id}">
+
+            <div class="flex flex-col gap-2">
+                <label for="nome" class="text-sm font-semibold text-neutral-400">Nome de Usuário:</label>
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-neutral-600">
+                        <i class="fa-solid fa-user"></i>
+                    </span>
+                    <input type="text" id="nome" name="nome" th:value="${usuario.nome}" required
+                        class="w-full bg-neutral-950 border border-neutral-850 hover:border-neutral-700 focus:border-brand-red focus:ring-1 focus:ring-brand-red rounded-lg pl-10 pr-4 py-2.5 text-sm outline-none transition-all text-white">
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-2">
+                <label for="tipoUsuario" class="text-sm font-semibold text-neutral-400">Tipo de Usuário:</label>
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-neutral-600">
+                        <i class="fa-solid fa-user-shield"></i>
+                    </span>
+                    <select id="tipoUsuario" name="tipoUsuario"
+                        class="w-full bg-neutral-950 border border-neutral-850 hover:border-neutral-700 focus:border-brand-red focus:ring-1 focus:ring-brand-red rounded-lg pl-10 pr-4 py-2.5 text-sm outline-none transition-all text-white cursor-pointer appearance-none">
+                        <option value="CLIENTE" th:selected="${usuario.tipo.name() == 'CLIENTE'}">Cliente</option>
+                        <option value="ADMIN" th:selected="${usuario.tipo.name() == 'ADMIN'}">Administrador</option>
+                    </select>
+                    <span
+                        class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-neutral-500 pointer-events-none">
+                        <i class="fa-solid fa-chevron-down text-xs"></i>
+                    </span>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-3 bg-neutral-950 border border-neutral-850 rounded-xl p-4">
+                <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" name="ativo" value="true" th:checked="${usuario.ativo}" class="sr-only peer">
+                    <div
+                        class="w-11 h-6 bg-neutral-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500">
+                    </div>
+                </label>
+                <div>
+                    <span class="text-sm font-semibold text-white">Conta Ativa</span>
+                    <p class="text-xs text-neutral-500 mt-0.5">Desativar impedirá o usuário de fazer login.</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-3 pt-4 border-t border-neutral-850">
+                <button type="submit"
+                    class="px-6 py-2.5 bg-brand-red hover:bg-brand-redHover text-white font-bold rounded-lg text-sm transition-all shadow-md shadow-red-950/20">
+                    Atualizar Usuário
+                </button>
+                <a th:href="@{/admin/usuarios}"
+                    class="px-5 py-2.5 border border-neutral-700 hover:border-neutral-500 text-neutral-300 hover:text-white font-medium rounded-lg text-sm transition-all">
+                    Voltar
+                </a>
+            </div>
+        </form>
+    </div>
+
+</body>
+
+</html>

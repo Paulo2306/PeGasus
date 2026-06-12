@@ -1,92 +1,107 @@
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PeGasus - Cadastro de Produto</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
-</head>
-<body>
 
-    <nav>
-        <a th:href="@{/dashboard}">Loja</a>
-        <th:block th:if="${session.usuarioLogado?.tipo?.name() == 'ADMIN'}">
-            <a th:href="@{/produto/lista}">Gerenciar Produtos</a>
-            <a th:href="@{/categoria/lista}">Gerenciar Categorias</a>
-            <a th:href="@{/cupom/lista}">Gerenciar Cupons</a>
-        </th:block>
-        <a th:href="@{/carrinho/mostrar}">Meu Carrinho</a>
-        <a th:href="@{/user/logout}">Sair</a>
-        
-        <span class="user-info" th:if="${session.usuarioLogado != null}">
-            Olá, [[${session.usuarioLogado.nome}]] ([[${session.usuarioLogado.tipo.getTipo()}]])
-        </span>
-    </nav>
+<head th:replace="~{fragments :: head('PeGasus - Cadastro de Produto')}"></head>
 
-    <div class="form-container">
-        <h1>Cadastro de Produto</h1>
-        
-        <form th:action="@{/produto/cadastro}" th:method="post" enctype="multipart/form-data">
-            
-            <div class="alert-error" th:if="${erro}" th:text="${erro}"></div>
+<body class="bg-[#1a1a1a] text-white font-sans antialiased min-h-screen p-5 md:p-8">
 
-            <div class="form-group">
-                <label for="nome">Nome do Produto:</label>
-                <input type="text" id="nome" name="nome" placeholder="Digite o nome do produto" required>
+    <nav th:replace="~{fragments :: navbar('gerenciamento')}"></nav>
+
+    <div class="max-w-2xl mx-auto bg-black border border-neutral-800 rounded-2xl p-6 md:p-8 shadow-2xl">
+        <h1
+            class="text-2xl font-extrabold tracking-tight mb-6 flex items-center gap-3 text-white border-b border-neutral-800 pb-4">
+            <i class="fa-solid fa-plus-circle text-brand-red"></i> Cadastro de Produto
+        </h1>
+
+        <form th:action="@{/produto/cadastro}" th:method="post" enctype="multipart/form-data" class="space-y-6">
+
+            <div th:if="${erro}"
+                class="bg-red-500/10 text-red-500 border border-red-500/20 p-4 rounded-xl text-center text-sm font-semibold flex items-center justify-center gap-2">
+                <i class="fa-solid fa-circle-exclamation"></i> [[${erro}]]
             </div>
 
-            <div class="form-group">
-                <label for="descricao">Descrição:</label>
-                <input type="text" id="descricao" name="descricao" placeholder="Breve descrição do produto" required>
+            <div class="flex flex-col gap-2">
+                <label for="nome" class="text-sm font-semibold text-neutral-400">Nome do Produto:</label>
+                <input type="text" id="nome" name="nome" placeholder="Digite o nome do produto" required
+                    class="w-full bg-neutral-950 border border-neutral-850 hover:border-neutral-700 focus:border-brand-red focus:ring-1 focus:ring-brand-red rounded-lg px-4 py-2.5 text-sm outline-none transition-all placeholder-neutral-700 text-white">
             </div>
 
-            <div class="form-group-row">
-                <div class="form-group">
-                    <label for="preco">Preço (R$):</label>
-                    <input type="number" id="preco" name="preco" step="0.01" placeholder="0.00" required>
+            <div class="flex flex-col gap-2">
+                <label for="descricao" class="text-sm font-semibold text-neutral-400">Descrição:</label>
+                <input type="text" id="descricao" name="descricao" placeholder="Breve descrição do produto" required
+                    class="w-full bg-neutral-950 border border-neutral-850 hover:border-neutral-700 focus:border-brand-red focus:ring-1 focus:ring-brand-red rounded-lg px-4 py-2.5 text-sm outline-none transition-all placeholder-neutral-700 text-white">
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="flex flex-col gap-2">
+                    <label for="preco" class="text-sm font-semibold text-neutral-400">Preço (R$):</label>
+                    <input type="number" id="preco" name="preco" step="0.01" placeholder="0.00" required
+                        class="w-full bg-neutral-950 border border-neutral-850 hover:border-neutral-700 focus:border-brand-red focus:ring-1 focus:ring-brand-red rounded-lg px-4 py-2.5 text-sm outline-none transition-all placeholder-neutral-700 text-white">
                 </div>
 
-                <div class="form-group">
-                    <label for="categoria">Categoria:</label>
-                    <select id="categoria" name="categoriaId" required>
-                        <option value="" disabled selected>Selecione uma categoria</option>
-                        <option th:each="categoria : ${listaCategorias}" 
-                                th:value="${categoria.id}" 
+                <div class="flex flex-col gap-2">
+                    <label for="categoria" class="text-sm font-semibold text-neutral-400">Categoria:</label>
+                    <div class="relative">
+                        <select id="categoria" name="categoriaId" required
+                            class="w-full bg-neutral-950 border border-neutral-850 hover:border-neutral-700 focus:border-brand-red focus:ring-1 focus:ring-brand-red rounded-lg px-4 py-2.5 text-sm outline-none transition-all text-white cursor-pointer appearance-none">
+                            <option value="" disabled selected>Selecione uma categoria</option>
+                            <option th:each="categoria : ${listaCategorias}" th:value="${categoria.id}"
                                 th:text="${categoria.nome}"></option>
-                    </select>
+                        </select>
+                        <span
+                            class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-neutral-500 pointer-events-none">
+                            <i class="fa-solid fa-chevron-down text-xs"></i>
+                        </span>
+                    </div>
                 </div>
             </div>
 
-            <div class="form-group">
-                <label>Imagem do Produto:</label>
-                <input type="file" name="img" accept="image/*" class="file-input">
+            <div class="flex flex-col gap-2">
+                <label class="text-sm font-semibold text-neutral-400">Imagem do Produto:</label>
+                <input type="file" name="img" accept="image/*"
+                    class="w-full text-sm text-neutral-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-neutral-800 file:text-white hover:file:bg-neutral-700 file:cursor-pointer border border-neutral-850 rounded-lg p-2 bg-neutral-950">
             </div>
 
-            <div class="features-section">
-                <h3>Características do Produto</h3>
-                    
-                <div class="feature-row">
-                    <input type="text" th:name="caracteristicas[0].nome" placeholder="Nome (Ex: Cor)">
-                    <input type="text" th:name="caracteristicas[0].valor" placeholder="Valor (Ex: Preto)">
+            <div class="bg-neutral-950 border border-neutral-850 rounded-xl p-5 space-y-4">
+                <h3 class="text-sm font-bold uppercase tracking-wider text-brand-red flex items-center gap-2">
+                    <i class="fa-solid fa-sliders"></i> Características do Produto
+                </h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <input type="text" th:name="caracteristicas[0].nome" placeholder="Característica (Ex: Cor)"
+                        class="w-full bg-neutral-900 border border-neutral-850 focus:border-brand-red focus:ring-1 focus:ring-brand-red rounded-lg px-4 py-2 text-sm outline-none transition-all placeholder-neutral-600 text-white">
+                    <input type="text" th:name="caracteristicas[0].valor" placeholder="Valor (Ex: Preto)"
+                        class="w-full bg-neutral-900 border border-neutral-850 focus:border-brand-red focus:ring-1 focus:ring-brand-red rounded-lg px-4 py-2 text-sm outline-none transition-all placeholder-neutral-600 text-white">
                 </div>
 
-                <div class="feature-row">
-                    <input type="text" th:name="caracteristicas[1].nome" placeholder="Nome (Ex: Voltagem)">
-                    <input type="text" th:name="caracteristicas[1].valor" placeholder="Valor (Ex: 220v)">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <input type="text" th:name="caracteristicas[1].nome" placeholder="Característica (Ex: Voltagem)"
+                        class="w-full bg-neutral-900 border border-neutral-850 focus:border-brand-red focus:ring-1 focus:ring-brand-red rounded-lg px-4 py-2 text-sm outline-none transition-all placeholder-neutral-600 text-white">
+                    <input type="text" th:name="caracteristicas[1].valor" placeholder="Valor (Ex: 220v)"
+                        class="w-full bg-neutral-900 border border-neutral-850 focus:border-brand-red focus:ring-1 focus:ring-brand-red rounded-lg px-4 py-2 text-sm outline-none transition-all placeholder-neutral-600 text-white">
                 </div>
 
-                <div class="feature-row">
-                    <input type="text" th:name="caracteristicas[2].nome" placeholder="Nome (Ex: Marca)">
-                    <input type="text" th:name="caracteristicas[2].valor" placeholder="Valor (Ex: Asus)">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <input type="text" th:name="caracteristicas[2].nome" placeholder="Característica (Ex: Marca)"
+                        class="w-full bg-neutral-900 border border-neutral-850 focus:border-brand-red focus:ring-1 focus:ring-brand-red rounded-lg px-4 py-2 text-sm outline-none transition-all placeholder-neutral-600 text-white">
+                    <input type="text" th:name="caracteristicas[2].valor" placeholder="Valor (Ex: Asus)"
+                        class="w-full bg-neutral-900 border border-neutral-850 focus:border-brand-red focus:ring-1 focus:ring-brand-red rounded-lg px-4 py-2 text-sm outline-none transition-all placeholder-neutral-600 text-white">
                 </div>
             </div>
 
-            <div class="form-actions">
-                <button type="submit" class="btn-submit">Cadastrar Produto</button>
-                <a th:href="@{/produto/lista}" class="btn-cancel">Voltar</a>
+            <div class="flex items-center gap-3 pt-4 border-t border-neutral-800">
+                <button type="submit"
+                    class="px-6 py-2.5 bg-brand-red hover:bg-brand-redHover text-white font-bold rounded-lg text-sm transition-all shadow-md shadow-red-950/20">
+                    Cadastrar Produto
+                </button>
+                <a th:href="@{/produto/lista}"
+                    class="px-5 py-2.5 border border-neutral-700 hover:border-neutral-500 text-neutral-300 hover:text-white font-medium rounded-lg text-sm transition-all">
+                    Voltar
+                </a>
             </div>
         </form>
     </div>
 
 </body>
+
 </html>

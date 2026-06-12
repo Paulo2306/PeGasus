@@ -31,7 +31,13 @@ public class AutorizacaoInterceptor implements HandlerInterceptor {
     }
 
     private boolean isManagementPath(String uri) {
+        if (uri.startsWith("/admin")) {
+            return true;
+        }
         if (uri.startsWith("/categoria")) {
+            return true;
+        }
+        if (uri.startsWith("/cupom")) {
             return true;
         }
         if (uri.startsWith("/produto")) {

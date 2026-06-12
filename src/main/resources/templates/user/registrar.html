@@ -1,43 +1,75 @@
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PeGasus - Registrar</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
-</head>
-<body>
 
-    <div class="form-container" style="max-width: 450px; margin: 10vh auto;">
-        <h1>Criar Conta</h1>
+<head th:replace="~{fragments :: head('PeGasus - Registrar')}"></head>
 
-        <div th:if="${erro}" class="alert-error" th:text="${erro}"></div>
-        
-        <form th:action="@{/user/registrar}" method="post">
-            <div class="form-group">
-                <label for="nome">Nome de Usuário:</label>
-                <input type="text" id="nome" name="nome" placeholder="Escolha um usuário" required>
+<body class="bg-[#1a1a1a] text-white font-sans antialiased min-h-screen flex items-center justify-center p-4">
+
+    <div class="w-full max-w-md bg-black border border-neutral-800 rounded-2xl p-6 md:p-8 shadow-2xl">
+        <div class="text-center mb-6">
+            <span class="text-2xl font-extrabold tracking-widest text-brand-red">PEGASUS</span>
+            <h1 class="text-xl font-bold text-neutral-300 mt-2">Criar Conta</h1>
+        </div>
+
+        <div th:if="${erro}"
+            class="bg-red-500/10 text-red-500 border border-red-500/20 p-4 rounded-xl mb-6 text-center text-sm font-semibold flex items-center justify-center gap-2">
+            <i class="fa-solid fa-circle-exclamation"></i> [[${erro}]]
+        </div>
+
+        <form th:action="@{/user/registrar}" method="post" class="space-y-5">
+            <div class="flex flex-col gap-2">
+                <label for="nome" class="text-sm font-semibold text-neutral-400">Nome de Usuário:</label>
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-neutral-600">
+                        <i class="fa-solid fa-user"></i>
+                    </span>
+                    <input type="text" id="nome" name="nome" placeholder="Escolha um usuário" required
+                        class="w-full bg-neutral-950 border border-neutral-850 hover:border-neutral-700 focus:border-brand-red focus:ring-1 focus:ring-brand-red rounded-lg pl-10 pr-4 py-2.5 text-sm outline-none transition-all placeholder-neutral-700">
+                </div>
             </div>
 
-            <div class="form-group">
-                <label for="senha">Senha:</label>
-                <input type="password" id="senha" name="senha" placeholder="Crie uma senha segura" required>
+            <div class="flex flex-col gap-2">
+                <label for="senha" class="text-sm font-semibold text-neutral-400">Senha:</label>
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-neutral-600">
+                        <i class="fa-solid fa-lock"></i>
+                    </span>
+                    <input type="password" id="senha" name="senha" placeholder="Crie uma senha segura" required
+                        class="w-full bg-neutral-950 border border-neutral-850 hover:border-neutral-700 focus:border-brand-red focus:ring-1 focus:ring-brand-red rounded-lg pl-10 pr-4 py-2.5 text-sm outline-none transition-all placeholder-neutral-700">
+                </div>
             </div>
 
-            <div class="form-group">
-                <label for="tipoUsuario">Tipo de Usuário:</label>
-                <select id="tipoUsuario" name="tipoUsuario">
-                    <option value="CLIENTE">Cliente</option>
-                    <option value="ADMIN">Administrador</option>
-                </select>
+            <div class="flex flex-col gap-2">
+                <label for="tipoUsuario" class="text-sm font-semibold text-neutral-400">Tipo de Usuário:</label>
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-neutral-600">
+                        <i class="fa-solid fa-user-shield"></i>
+                    </span>
+                    <select id="tipoUsuario" name="tipoUsuario"
+                        class="w-full bg-neutral-950 border border-neutral-850 hover:border-neutral-700 focus:border-brand-red focus:ring-1 focus:ring-brand-red rounded-lg pl-10 pr-4 py-2.5 text-sm outline-none transition-all text-white cursor-pointer appearance-none">
+                        <option value="CLIENTE">Cliente</option>
+                        <option value="ADMIN">Administrador</option>
+                    </select>
+                    <span
+                        class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-neutral-500 pointer-events-none">
+                        <i class="fa-solid fa-chevron-down text-xs"></i>
+                    </span>
+                </div>
             </div>
 
-            <div class="form-actions" style="flex-direction: column; align-items: stretch; gap: 15px;">
-                <button type="submit" class="btn-submit" style="width: 100%;">Cadastrar</button>
-                <a th:href="@{/user/logar}" class="btn-cancel" style="text-align: center;">Já tem conta? Entrar</a>
+            <div class="pt-2 space-y-3">
+                <button type="submit"
+                    class="w-full py-3 bg-brand-red hover:bg-brand-redHover text-white font-bold rounded-lg transition-all shadow-lg shadow-red-950/30 hover:scale-[1.01] active:scale-[0.99]">
+                    Cadastrar
+                </button>
+                <a th:href="@{/user/logar}"
+                    class="block text-center py-2.5 border border-neutral-850 hover:border-neutral-750 hover:bg-neutral-900 text-neutral-400 hover:text-white font-medium text-sm rounded-lg transition-all">
+                    Já tem conta? Entrar
+                </a>
             </div>
         </form>
     </div>
 
 </body>
-</html> 
+
+</html>

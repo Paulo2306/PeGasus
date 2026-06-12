@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments :: head('PeGasus - Painel do Admin')}"></head>
+
+<body class="bg-[#1a1a1a] text-white font-sans antialiased min-h-screen p-5 md:p-8">
+
+    <nav th:replace="~{fragments :: navbar('gerenciamento')}"></nav>
+
+    <div class="max-w-5xl mx-auto">
+        <h1 class="text-3xl font-extrabold tracking-tight mb-2 flex items-center gap-3 text-white">
+            <i class="fa-solid fa-shield-halved text-brand-red"></i> Painel do Administrador
+        </h1>
+        <p class="text-neutral-500 text-sm mb-10">Acesse as ferramentas de gerenciamento do sistema.</p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+            <a th:href="@{/produto/lista}"
+                class="group bg-black border border-neutral-800 hover:border-neutral-700 rounded-2xl p-6 flex flex-col items-center text-center gap-4 shadow-xl transition-all duration-300 hover:translate-y-[-4px]">
+                <div
+                    class="w-14 h-14 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 text-xl group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-boxes-stacked"></i>
+                </div>
+                <div>
+                    <h3 class="text-base font-bold text-white group-hover:text-emerald-400 transition-colors">Produtos
+                    </h3>
+                    <p class="text-xs text-neutral-500 mt-1">Gerenciar catálogo de produtos</p>
+                </div>
+            </a>
+
+            <a th:href="@{/categoria/lista}"
+                class="group bg-black border border-neutral-800 hover:border-neutral-700 rounded-2xl p-6 flex flex-col items-center text-center gap-4 shadow-xl transition-all duration-300 hover:translate-y-[-4px]">
+                <div
+                    class="w-14 h-14 rounded-2xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 text-xl group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-tags"></i>
+                </div>
+                <div>
+                    <h3 class="text-base font-bold text-white group-hover:text-blue-400 transition-colors">Categorias
+                    </h3>
+                    <p class="text-xs text-neutral-500 mt-1">Organizar categorias da loja</p>
+                </div>
+            </a>
+
+            <a th:href="@{/cupom/lista}"
+                class="group bg-black border border-neutral-800 hover:border-neutral-700 rounded-2xl p-6 flex flex-col items-center text-center gap-4 shadow-xl transition-all duration-300 hover:translate-y-[-4px]">
+                <div
+                    class="w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 text-xl group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-ticket-simple"></i>
+                </div>
+                <div>
+                    <h3 class="text-base font-bold text-white group-hover:text-amber-400 transition-colors">Cupons</h3>
+                    <p class="text-xs text-neutral-500 mt-1">Criar e gerenciar descontos</p>
+                </div>
+            </a>
+
+            <a th:href="@{/admin/usuarios}"
+                class="group bg-black border border-neutral-800 hover:border-neutral-700 rounded-2xl p-6 flex flex-col items-center text-center gap-4 shadow-xl transition-all duration-300 hover:translate-y-[-4px]">
+                <div
+                    class="w-14 h-14 rounded-2xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 text-xl group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-users-gear"></i>
+                </div>
+                <div>
+                    <h3 class="text-base font-bold text-white group-hover:text-purple-400 transition-colors">Usuários
+                    </h3>
+                    <p class="text-xs text-neutral-500 mt-1">Gerenciar contas de usuários</p>
+                </div>
+            </a>
+
+        </div>
+
+        <div class="mt-10 pt-6 border-t border-neutral-850">
+            <a th:href="@{/dashboard}"
+                class="inline-flex items-center gap-2 px-5 py-2.5 border border-neutral-700 hover:border-neutral-500 text-neutral-300 hover:text-white font-medium rounded-lg text-sm transition-all">
+                <i class="fa-solid fa-arrow-left"></i> Voltar para a Loja
+            </a>
+        </div>
+    </div>
+
+</body>
+
+</html>

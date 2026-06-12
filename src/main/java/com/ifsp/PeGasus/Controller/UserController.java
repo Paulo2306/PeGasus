@@ -67,11 +67,16 @@ public class UserController {
         Optional<User> userOpt = userRepository.findByNomeAndSenha(nome, senha);
 
         if (userOpt.isPresent()) {
-            session.setAttribute("usuarioLogado", userOpt.get());
+            User user = userOpt.get();
+            if (!user.isAtivo()) {
+                model.addAttribute("mensagem", "Sua conta foi desativada. Entre em contato com um administrador.");
+                return "user/logar";
+            }
+            session.setAttribute("usuarioLogado", user);
             return "redirect:/dashboard";
         }
 
-        model.addAttribute("erro", "Usuário ou senha inválidos.");
+        model.addAttribute("mensagem", "Usuário ou senha inválidos.");
         return "user/logar";
     }
 
