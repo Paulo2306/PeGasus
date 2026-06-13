@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ifsp.PeGasus.Model.Categoria;
 import com.ifsp.PeGasus.Model.Produto;
@@ -138,8 +139,12 @@ public class ProdutoController {
     }
 
     @GetMapping("/produto/{id}/excluirProduto")
-    public String excluirProduto(@PathVariable long id){
-        produtoRepository.deleteById(id);
+    public String excluirProduto(@PathVariable long id, RedirectAttributes redirectAttributes){
+        try {
+            produtoRepository.deleteById(id);
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("erro", "Não é possível excluir este produto pois ele está associado ao carrinho de um cliente.");
+        }
         return "redirect:/produto/lista";
     }
 
