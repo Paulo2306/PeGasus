@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ifsp.PeGasus.Model.Cupom;
 import com.ifsp.PeGasus.Repository.CupomRepository;
@@ -57,8 +58,12 @@ public class CupomController {
     }
 
     @GetMapping("/cupom/{id}/excluirCupom")
-    public String excluircupom(@PathVariable long id){
-        cupomRepository.deleteById(id);
+    public String excluircupom(@PathVariable long id, RedirectAttributes redirectAttributes){
+        try {
+            cupomRepository.deleteById(id);
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("erro", "Não é possível excluir este cupom pois ele está aplicado no carrinho de um cliente.");
+        }
         return "redirect:/cupom/lista";
     } 
 }
