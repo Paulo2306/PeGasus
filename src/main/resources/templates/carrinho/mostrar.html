@@ -89,11 +89,11 @@
                     <div class="space-y-3">
                         <div class="flex justify-between text-sm text-neutral-400">
                             <span>Subtotal:</span>
-                            <span class="font-semibold text-white">R$ [[${subtotal}]],00</span>
+                            <span class="font-semibold text-white">R$ [[${subtotal}]]</span>
                         </div>
                         <div th:if="${desconto > 0}" class="flex justify-between text-sm text-brand-green">
                             <span>Desconto ([[${cupomAtivo?.valorPor}]]%):</span>
-                            <span class="font-semibold">- R$ [[${desconto}]],00</span>
+                            <span class="font-semibold">- R$ [[${desconto}]]</span>
                         </div>
                         <div class="border-t border-neutral-800 pt-3 flex justify-between items-baseline">
                             <span class="text-sm font-bold text-white">Total:</span>

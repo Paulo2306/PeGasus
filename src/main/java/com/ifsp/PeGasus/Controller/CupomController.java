@@ -23,7 +23,7 @@ public class CupomController {
     public String formulariocupom(Model model){
         List<Cupom> listacupoms = cupomRepository.findAll();
         model.addAttribute("listacupoms", listacupoms);
-        return "cupom/formulariocupom";
+        return "cupom/formularioCupom";
     }
 
     @PostMapping("/cupom/cadastro")
