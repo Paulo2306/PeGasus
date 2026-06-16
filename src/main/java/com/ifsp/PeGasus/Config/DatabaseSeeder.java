@@ -71,7 +71,7 @@ public class DatabaseSeeder implements CommandLineRunner {
         return null;
     }
 
-    private Produto criarProduto(String nome, String descricao, long preco, Categoria categoria, String... caracteristicasChaveValor) {
+    private Produto criarProduto(String nome, String descricao, Float preco, Categoria categoria, String... caracteristicasChaveValor) {
         List<Caracteristicas> lista = new ArrayList<>();
         for (int i = 0; i < caracteristicasChaveValor.length; i += 2) {
             if (i + 1 < caracteristicasChaveValor.length) {
@@ -87,7 +87,7 @@ public class DatabaseSeeder implements CommandLineRunner {
         produtos.add(criarProduto(
             "Placa de Vídeo RTX 4060",
             "Placa de vídeo NVIDIA GeForce RTX 4060 8GB GDDR6, ideal para jogos em Full HD com Ray Tracing e DLSS 3.",
-            2399,
+            2399.00f,
             hardware,
             "Memória", "8GB GDDR6",
             "Interface", "128-bit",
@@ -97,7 +97,7 @@ public class DatabaseSeeder implements CommandLineRunner {
         produtos.add(criarProduto(
             "Processador AMD Ryzen 5 5600X",
             "Processador AMD Ryzen 5 5600X, 6 núcleos e 12 threads, clock de 3.7GHz a 4.6GHz, com cooler Wraith Stealth.",
-            949,
+            949.00f,
             hardware,
             "Núcleos", "6",
             "Threads", "12",
@@ -107,7 +107,7 @@ public class DatabaseSeeder implements CommandLineRunner {
         produtos.add(criarProduto(
             "Memória RAM Corsair Vengeance 16GB",
             "Módulo único de memória RAM Corsair Vengeance LPX de 16GB DDR4 com clock de 3200MHz, ideal para multitarefa.",
-            299,
+            299.00f,
             hardware,
             "Capacidade", "16GB",
             "Tipo", "DDR4",
@@ -117,7 +117,7 @@ public class DatabaseSeeder implements CommandLineRunner {
         produtos.add(criarProduto(
             "Placa Mãe Asus TUF Gaming B550M-Plus",
             "Placa mãe AMD AM4 B550 micro ATX com PCIe 4.0, dual M.2, rede de 2.5 Gb, HDMI, DisplayPort, USB 3.2 Gen 2.",
-            899,
+            899.00f,
             hardware,
             "Socket", "AM4",
             "Formato", "Micro ATX",
@@ -127,7 +127,7 @@ public class DatabaseSeeder implements CommandLineRunner {
         produtos.add(criarProduto(
             "Teclado Mecânico Redragon Kumara",
             "Teclado Gamer Mecânico Redragon Kumara K552, Switch Outemu Blue, iluminação LED vermelha, Layout ABNT2.",
-            249,
+            249.00f,
             perifericos,
             "Switch", "Outemu Blue",
             "Layout", "ABNT2",
@@ -137,7 +137,7 @@ public class DatabaseSeeder implements CommandLineRunner {
         produtos.add(criarProduto(
             "Mouse Gamer Logitech G502 Hero",
             "Mouse Gamer Logitech G502 Hero com sensor de alta precisão HERO 25K, 11 botões programáveis e pesos ajustáveis.",
-            349,
+            349.00f,
             perifericos,
             "Sensor", "HERO 25K",
             "Botões", "11 programáveis",
@@ -147,7 +147,7 @@ public class DatabaseSeeder implements CommandLineRunner {
         produtos.add(criarProduto(
             "Headset Gamer HyperX Cloud II",
             "Headset Gamer HyperX Cloud II com som surround virtual 7.1, driver de 53mm, microfone removível com cancelamento de ruído.",
-            599,
+            599.00f,
             perifericos,
             "Som", "7.1 Virtual",
             "Driver", "53mm",
@@ -157,7 +157,7 @@ public class DatabaseSeeder implements CommandLineRunner {
         produtos.add(criarProduto(
             "Monitor Gamer AOC Hero 24\" 144Hz",
             "Monitor Gamer AOC Hero 24 polegadas IPS, taxa de atualização de 144Hz, tempo de resposta de 1ms, FreeSync.",
-            849,
+            849.00f,
             perifericos,
             "Tela", "24 polegadas IPS",
             "Frequência", "144Hz",
@@ -167,7 +167,7 @@ public class DatabaseSeeder implements CommandLineRunner {
         produtos.add(criarProduto(
             "PC Gamer Pegasus i5 / RTX 3060 / 16GB",
             "Computador Gamer montado com processador Intel Core i5, Placa de Vídeo RTX 3060, 16GB RAM, SSD 512GB, pronto para rodar tudo.",
-            4299,
+            4299.00f,
             computadores,
             "Processador", "Intel Core i5",
             "Placa de Vídeo", "RTX 3060 12GB",
@@ -177,7 +177,7 @@ public class DatabaseSeeder implements CommandLineRunner {
         produtos.add(criarProduto(
             "Notebook Gamer Acer Nitro 5",
             "Notebook Gamer Acer Nitro 5 AN515-57-52LC, Intel Core i5, 8GB RAM, SSD 512GB, GTX 1650, Tela 15.6\" FHD 144Hz.",
-            3999,
+            3999.00f,
             computadores,
             "Processador", "Intel Core i5-11400H",
             "Placa de Vídeo", "GTX 1650 4GB",
@@ -187,7 +187,7 @@ public class DatabaseSeeder implements CommandLineRunner {
         produtos.add(criarProduto(
             "SSD Kingston NV2 1TB NVMe M.2",
             "SSD Kingston NV2 1TB NVMe M.2 2280 PCIe Gen 4.0 x4, leitura de até 3500MB/s e gravação de até 2100MB/s.",
-            389,
+            389.00f,
             armazenamento,
             "Capacidade", "1TB",
             "Interface", "PCIe 4.0 NVMe",
@@ -197,7 +197,7 @@ public class DatabaseSeeder implements CommandLineRunner {
         produtos.add(criarProduto(
             "HD Externo Seagate Expansion 2TB",
             "Disco Rígido Externo Portátil Seagate Expansion de 2TB, USB 3.0 para backup rápido e fácil armazenamento móvel.",
-            459,
+            459.00f,
             armazenamento,
             "Capacidade", "2TB",
             "Interface", "USB 3.0",

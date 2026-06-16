@@ -94,7 +94,7 @@ public class ProdutoController {
     @PostMapping("/produto/atualizar")
     public String atualizarProduto(@RequestParam long id,
                                    @RequestParam(required = false) String descricao,
-                                   @RequestParam(required = false) Long preco,
+                                   @RequestParam(required = false) Float preco,
                                    @RequestParam(required = false) Long categoriaId,
                                    @RequestParam(required = false) String nome,
                                    @RequestParam(value = "img", required = false) MultipartFile img,

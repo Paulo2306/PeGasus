@@ -69,30 +69,36 @@
                 </h3>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <input type="text" th:name="caracteristicas[0].nome" th:value="${produto.caracteristicas[0].nome}"
-                        placeholder="Nome"
-                        class="w-full bg-neutral-900 border border-neutral-850 focus:border-brand-red focus:ring-1 focus:ring-brand-red rounded-lg px-4 py-2 text-sm outline-none transition-all text-white">
-                    <input type="text" th:name="caracteristicas[0].valor" th:value="${produto.caracteristicas[0].valor}"
-                        placeholder="Valor"
-                        class="w-full bg-neutral-900 border border-neutral-850 focus:border-brand-red focus:ring-1 focus:ring-brand-red rounded-lg px-4 py-2 text-sm outline-none transition-all text-white">
+                    <input type="text" th:name="caracteristicas[0].nome" 
+                           th:value="${#lists.size(produto.caracteristicas) > 0 ? produto.caracteristicas[0].nome : ''}"
+                           placeholder="Nome"
+                           class="w-full bg-neutral-900 border border-neutral-850 focus:border-brand-red focus:ring-1 focus:ring-brand-red rounded-lg px-4 py-2 text-sm outline-none transition-all text-white">
+                    <input type="text" th:name="caracteristicas[0].valor" 
+                           th:value="${#lists.size(produto.caracteristicas) > 0 ? produto.caracteristicas[0].valor : ''}"
+                           placeholder="Valor"
+                           class="w-full bg-neutral-900 border border-neutral-850 focus:border-brand-red focus:ring-1 focus:ring-brand-red rounded-lg px-4 py-2 text-sm outline-none transition-all text-white">
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <input type="text" th:name="caracteristicas[1].nome" th:value="${produto.caracteristicas[1].nome}"
-                        placeholder="Nome"
-                        class="w-full bg-neutral-900 border border-neutral-850 focus:border-brand-red focus:ring-1 focus:ring-brand-red rounded-lg px-4 py-2 text-sm outline-none transition-all text-white">
-                    <input type="text" th:name="caracteristicas[1].valor" th:value="${produto.caracteristicas[1].valor}"
-                        placeholder="Valor"
-                        class="w-full bg-neutral-900 border border-neutral-850 focus:border-brand-red focus:ring-1 focus:ring-brand-red rounded-lg px-4 py-2 text-sm outline-none transition-all text-white">
+                    <input type="text" th:name="caracteristicas[1].nome" 
+                           th:value="${#lists.size(produto.caracteristicas) > 1 ? produto.caracteristicas[1].nome : ''}"
+                           placeholder="Nome"
+                           class="w-full bg-neutral-900 border border-neutral-850 focus:border-brand-red focus:ring-1 focus:ring-brand-red rounded-lg px-4 py-2 text-sm outline-none transition-all text-white">
+                    <input type="text" th:name="caracteristicas[1].valor" 
+                           th:value="${#lists.size(produto.caracteristicas) > 1 ? produto.caracteristicas[1].valor : ''}"
+                           placeholder="Valor"
+                           class="w-full bg-neutral-900 border border-neutral-850 focus:border-brand-red focus:ring-1 focus:ring-brand-red rounded-lg px-4 py-2 text-sm outline-none transition-all text-white">
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <input type="text" th:name="caracteristicas[2].nome" th:value="${produto.caracteristicas[2].nome}"
-                        placeholder="Nome"
-                        class="w-full bg-neutral-900 border border-neutral-850 focus:border-brand-red focus:ring-1 focus:ring-brand-red rounded-lg px-4 py-2 text-sm outline-none transition-all text-white">
-                    <input type="text" th:name="caracteristicas[2].valor" th:value="${produto.caracteristicas[2].valor}"
-                        placeholder="Valor"
-                        class="w-full bg-neutral-900 border border-neutral-850 focus:border-brand-red focus:ring-1 focus:ring-brand-red rounded-lg px-4 py-2 text-sm outline-none transition-all text-white">
+                    <input type="text" th:name="caracteristicas[2].nome" 
+                           th:value="${#lists.size(produto.caracteristicas) > 2 ? produto.caracteristicas[2].nome : ''}"
+                           placeholder="Nome"
+                           class="w-full bg-neutral-900 border border-neutral-850 focus:border-brand-red focus:ring-1 focus:ring-brand-red rounded-lg px-4 py-2 text-sm outline-none transition-all text-white">
+                    <input type="text" th:name="caracteristicas[2].valor" 
+                           th:value="${#lists.size(produto.caracteristicas) > 2 ? produto.caracteristicas[2].valor : ''}"
+                           placeholder="Valor"
+                           class="w-full bg-neutral-900 border border-neutral-850 focus:border-brand-red focus:ring-1 focus:ring-brand-red rounded-lg px-4 py-2 text-sm outline-none transition-all text-white">
                 </div>
             </div>
 

@@ -30,7 +30,7 @@
                     <h1 th:text="${produto.nome}"
                         class="text-3xl md:text-4xl font-extrabold tracking-tight text-white mb-2">Nome do Produto</h1>
 
-                    <div class="text-2xl md:text-3xl font-black text-brand-green mb-6">R$ [[${produto.preco}]],00</div>
+                    <div class="text-2xl md:text-3xl font-black text-brand-green mb-6">R$ <span th:text="${#numbers.formatDecimal(produto.preco, 1, 'POINT', 2, 'COMMA')}">0,00</span></div>
 
                     <p
                         class="text-neutral-400 text-sm md:text-base leading-relaxed border-l-4 border-brand-red bg-neutral-950 p-4 rounded-r-lg mb-6">

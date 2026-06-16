@@ -46,7 +46,7 @@ public class Produto {
     @Column(name = "descricao")
     private String descricao;
     @Column(name = "preco")
-    private long preco;
+    private Float preco;
     @ManyToOne
     @JoinColumn(name = "categoria_id")
     private Categoria categoria;
@@ -61,7 +61,7 @@ public class Produto {
         this.imagem = imagem;
     }
     
-    public Produto(String nome, String descricao, long preco, Categoria categoria, List<Caracteristicas> caracteristicas) {
+    public Produto(String nome, String descricao, Float preco, Categoria categoria, List<Caracteristicas> caracteristicas) {
         this.nome = nome;
         this.descricao = descricao;
         this.preco = preco;
@@ -83,10 +83,10 @@ public class Produto {
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
-    public long getPreco() {
+    public Float getPreco() {
         return preco;
     }
-    public void setPreco(long preco) {
+    public void setPreco(Float preco) {
         this.preco = preco;
     }
     public Categoria getCategoria() {

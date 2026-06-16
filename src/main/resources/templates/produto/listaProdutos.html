@@ -57,7 +57,7 @@
                         </td>
 
                         <td class="py-4 px-5 text-neutral-400 max-w-[200px] truncate">[[${produto.descricao}]]</td>
-                        <td class="py-4 px-5 font-bold text-brand-green">R$ [[${produto.preco}]],00</td>
+                        <td class="py-4 px-5 font-bold text-brand-green">R$ <span th:text="${#numbers.formatDecimal(produto.preco, 1, 'POINT', 2, 'COMMA')}">0,00</span></td>
                         <td class="py-4 px-5">
                             <span
                                 class="inline-block px-2.5 py-1 text-xs font-bold uppercase tracking-wider bg-neutral-900 text-brand-red border border-neutral-850 rounded-md">

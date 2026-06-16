@@ -88,7 +88,7 @@
                 </div>
 
                 <div class="mt-auto">
-                    <div class="text-lg font-black text-brand-green mb-3">R$ [[${produto.preco}]],00</div>
+                    <div class="text-lg font-black text-brand-green mb-3">R$ <span th:text="${#numbers.formatDecimal(produto.preco, 1, 'POINT', 2, 'COMMA')}">0,00</span></div>
 
                     <div class="flex flex-col gap-2 pt-2 border-t border-neutral-900">
                         <a th:href="@{/produto/{id}(id=${produto.id})}"
