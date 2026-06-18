@@ -49,10 +49,11 @@ public class CupomController {
     }
 
     @PostMapping("/cupom/atualizar")
-    public String atualizarcupom(@RequestParam long id, @RequestParam String nome){
+    public String atualizarcupom(@RequestParam long id, @RequestParam String nome, @RequestParam int valorPor){
 
         Cupom cupom = cupomRepository.findById(id).orElse(null);
         cupom.setNome(nome);
+        cupom.setValorPor(valorPor);
         cupomRepository.save(cupom);
         return "redirect:/cupom/lista";
     }
